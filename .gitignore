@@ -1,0 +1,17 @@
+
+# Local history
+.history
+
+# Wollok Log
+log
+*.log
+
+# Dependencies
+node_modules
+
+# Ligas
+Ligas/
+
+# Cache
+_pycache__
+*._pycache__
