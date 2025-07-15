@@ -27,7 +27,6 @@ def guardar():
     listaPrimeraJ = [equipo.dict() for equipo in exo.participantesDeLigaPrimera()]
     listaSegundaJ = [equipo.dict() for equipo in exo.participantesDeLigaSegunda()]
     listaDeCampeonesJ = [equipo.dict() for equipo in campeonesSinEquiposDePrimera() + exo.getClasificadosInternacionales()]
-    # print(listaDeCampeonesJ)
     temporada += 1
 
     with open("equipos.json", "w") as listaEquipos:
@@ -43,8 +42,6 @@ def campeonesSinEquiposDePrimera():
 def main():
     exo.jugarTodasLasCompeticionesGuardando(temporada)
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada)
-    # print(list(map(lambda equipo: equipo.nombre(), campeonesSinEquiposDePrimera())))
-    # print(list(map(lambda equipo: equipo.nombre(), exo.clasificadosACopaInternacional())))
     guardar()
 
 main()
