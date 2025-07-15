@@ -1,12 +1,15 @@
 import random
 import classEquipo as CE
+import sys
 class Copa:
     def __init__(self, participantes) -> None:
         self._participantes = participantes
         self._listaDeGrupos = []
         self._faseFinalGrupo1 = []
         self._faseFinalGrupo2 = []
+        random.shuffle(self._participantes)
         self.anadirParticipantesAGrupos()
+        self._campeon = None
 
     def _listaDeGrupos(self) -> None:
         return self._listaDeGrupos
@@ -25,6 +28,9 @@ class Copa:
     
     def participantes(self) -> None:
         return self._participantes
+
+    def campeon(self):
+        return self._campeon
 
     def anadirListaDeParticipantes_(self, unaLista : list) -> None:
         self._participantes.extend(unaLista)
@@ -46,13 +52,15 @@ class Copa:
             numeroIndice += 4
     
 
-    def jugarCopa(self) -> None:
+    def jugarCopa(self, temporada : int) -> None:
+        print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
         self.jugarFaseDeGrupos()
         self.jugarFaseEliminatoria()
         self.jugarFinal()
     
 
-    def jugarCopaEliminacionDirecta(self) -> None:
+    def jugarCopaEliminacionDirecta(self, temporada : int) -> None:
+        print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
         self.establecerGruposFaseFinalParaEliminacionDirecta()
         self.jugarFaseEliminatoria() 
         self.jugarFinal()
@@ -95,14 +103,14 @@ class Copa:
         for grupo in self._listaDeGrupos:
             self._faseFinalGrupo1.append(grupo.participantes()[0]) 
             self._faseFinalGrupo2.append(grupo.participantes()[1])
-        random.shuffle(self._faseFinalGrupo1)
-        random.shuffle(self._faseFinalGrupo2)
         print("Primeros que avanzan a la fase final:")
         print(self.faseFinalGrupo1PorNombre())
         print("")
         print("Segundos que avanzan a la fase final:")
         print(self.faseFinalGrupo2PorNombre())
         print("")
+        random.shuffle(self._faseFinalGrupo1)
+        random.shuffle(self._faseFinalGrupo2)
     
 
     def jugarFaseEliminatoria(self) -> None:
@@ -131,7 +139,8 @@ class Copa:
     
     def jugarFinal(self) -> None:
         print("¡La gran final de la copa ha comenzado!")
-        print(f"¡{CE.ganadorEntre_(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0]).nombre()} es el campeón de la copa!")
+        self._campeon = CE.ganadorEntre_(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])
+        print(f"¡{self._campeon.nombre()} es el campeón de la copa!")
         self.reiniciarCopa()
 
     def reiniciarCopa(self) -> None:
@@ -142,5 +151,11 @@ class Copa:
 
     def reglasCopaInternacional(self) -> str:
         return "Reglas de la copa internacional: La clasificación es para el campeón de la liga y de la copa principalmente. si hubiera mismo campeón de la liga y la copa, el segundo y tercer lugar de la liga acceden al torneo. si clasifica ya el subcampeón de la liga por la copa, deja abierto su puesto para que vaya el buscampeón de la copa. Es decir, la prioridad siempre es 1. Liga, 2. Copa, 3. Subcampeón de la liga. 4. Tercer lugar de la liga. 5. Subcampeón de la copa."
+    
+    def jugarCopaGuardandoResultados(self, rutaArchivo : str, temporada : int):
+        with open(rutaArchivo, "a", encoding = "utf-8") as archivo:
+            sys.stdout = archivo
+            self.jugarCopa(temporada)
+        sys.stdout = sys.__stdout__
  
 # TODO: Luego veo cómo implementar la ida y vuelta

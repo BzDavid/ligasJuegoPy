@@ -1,4 +1,5 @@
 import random
+import sys
 class Liga:
     def __init__(self, participantes : list):
         self._participantes = participantes
@@ -23,6 +24,18 @@ class Liga:
 
     def participantes(self):
         return self._participantes
+    
+    def primero(self):
+        return self._participantes[0]
+
+    def segundo(self):
+        return self._participantes[1]
+
+    def tercero(self):
+        return self._participantes[2]
+    
+    def ultimo(self):
+        return self._participantes[int(len(self._participantes) - 1)]
 
     def anadirListaDeEquipos(self, unaListaDeEquipos : list) -> None:
         self._participantes.extend(unaListaDeEquipos)
@@ -32,18 +45,11 @@ class Liga:
         self._participantes.clear()
         self.anadirListaDeEquipos(unaListaDeEquipos)
 
-    def eliminarParticipante(self, unParticipante : str) -> None:
-        if unParticipante in self._participantes:
-            self._participantes.remove(unParticipante)
-            self.actualizarEquiposParticipantes()
-        else:
-            raise ValueError(f"El participante {unParticipante} no está en la liga.")
-        
-    # def criterioOrdenamiento(equipoUno, equipoDos) -> bool:
-    #     if (equipoUno.puntos() > equipoDos.puntos()):
-    #         return equipoUno.diferenciaDeGoles() > equipoDos.diferenciaDeGoles()
-    #     else:
-    #         return equipoUno.puntos() > equipoDos.puntos()
+    def eliminarParticipantePorNombre(self, nombreDelParticipante : str) -> None:
+        for equipo in self._participantes:
+            if equipo.nombre() == nombreDelParticipante:
+                self._participantes.remove(equipo)
+                break
 
     def ordenarPorPuntos(self) -> None:
         self._participantes.sort(key = lambda unEquipo: (unEquipo.puntos(), unEquipo.diferenciaDeGoles()), reverse = True)
@@ -59,14 +65,12 @@ class Liga:
         for equipo in self._participantes:
             posicion += 1
             print(f"{posicion}. {equipo.stats()}")
-        posicion = 0
 
     def imprimirEstadisticasTotalesDeEquipos(self) -> None:
         posicion = 0
         for equipo in self._participantes:
             posicion += 1
             print(f"{posicion}. {equipo.fullStats()}")
-        posicion = 0
 
     def jugarUnaVuelta(self) -> None:
         for i in list(range(len(self._participantes) - 1)):
@@ -113,6 +117,12 @@ class Liga:
             int(len(self._participantes) - (len(self._participantes) / 2)) :
             int(len(self._participantes))])
         
+    def jugarLigaGuardandoResultados(self, rutaArchivo : str, temporada : int):
+        with open(rutaArchivo, "a", encoding = "utf-8") as archivo:
+            sys.stdout = archivo
+            self.jugarLiga(temporada)
+        sys.stdout = sys.__stdout__
+        
 class Equipo:
     def __init__(self, nombre: str) -> None:
         self._nombre = nombre
@@ -123,6 +133,11 @@ class Equipo:
 
     def __str__(self):
         return self._nombre
+    
+    def dict(self):
+        return {
+            "nombre" : self._nombre 
+        }
     
     def puntos(self) -> int:
         return self._puntos
@@ -188,12 +203,18 @@ def generar():
     else:
         return resultado
 
+def ganoElLocal(equipoLocal: Equipo, equipoVisitante: Equipo) -> bool:
+    return equipoLocal.golesEnPartido() > equipoVisitante.golesEnPartido()
+
+def empataronLosEquipos(equipoLocal: Equipo, equipoVisitante: Equipo) -> bool:
+    return equipoLocal.golesEnPartido() == equipoVisitante.golesEnPartido()
+    
 def jugarPartido(equipoLocal: Equipo, equipoVisitante: Equipo) -> None:
     equipoLocal.jugarPartidoContra_(equipoVisitante)
     equipoVisitante.jugarPartidoContra_(equipoLocal)
-    if (equipoLocal.golesEnPartido() > equipoVisitante.golesEnPartido()):
+    if (ganoElLocal(equipoLocal, equipoVisitante)):
         equipoLocal.gana()
-    elif (equipoLocal.golesEnPartido() == equipoVisitante.golesEnPartido()):
+    elif (empataronLosEquipos(equipoLocal, equipoVisitante)):
         equipoLocal.empata()
         equipoVisitante.empata()
     else:
@@ -204,9 +225,27 @@ def ganadorEntre_(equipoLocal : Equipo, equipoVisitante: Equipo) -> Equipo:
     equipoLocal.jugarPartidoEspecial()
     equipoVisitante.jugarPartidoEspecial()
     mostrarResultado(equipoLocal, equipoVisitante)
-    if (equipoLocal.golesEnPartido() > equipoVisitante.golesEnPartido()):
+    if (ganoElLocal(equipoLocal, equipoVisitante)):
         return equipoLocal
-    elif (equipoLocal.golesEnPartido() == equipoVisitante.golesEnPartido()):
+    elif (empataronLosEquipos(equipoLocal, equipoVisitante)):
+        return jugarProrroga(equipoLocal, equipoVisitante)
+    else:
+        return equipoVisitante
+
+def ganadorEntre_IdaYVuelta(equipoLocal : Equipo, equipoVisitante: Equipo) -> Equipo:
+    globalGolesLocal = 0
+    globalGolesVisitante = 0
+    for i in range(2):
+        equipoLocal.jugarPartidoEspecial()
+        equipoVisitante.jugarPartidoEspecial()
+        mostrarResultado(equipoLocal, equipoVisitante)
+        globalGolesLocal += equipoLocal.golesEnPartido()
+        globalGolesVisitante += equipoVisitante.golesEnPartido()
+        print(f"El global es [{globalGolesLocal}] - [{globalGolesVisitante}]")
+        print("")
+    if (globalGolesLocal > globalGolesVisitante):
+        return equipoLocal
+    elif (globalGolesLocal == globalGolesVisitante):
         return jugarProrroga(equipoLocal, equipoVisitante)
     else:
         return equipoVisitante
@@ -216,12 +255,21 @@ def jugarProrroga(equipoLocal: Equipo, equipoVisitante: Equipo) -> Equipo:
     equipoVisitante.jugarProrroga()
     print("Es empate, procediendo a la prórroga: ")
     mostrarResultado(equipoLocal, equipoVisitante)
-    if (equipoLocal.golesEnPartido() > equipoVisitante.golesEnPartido()):
+    if (ganoElLocal(equipoLocal, equipoVisitante)):
         return equipoLocal
-    elif (equipoLocal.golesEnPartido() == equipoVisitante.golesEnPartido()):
+    elif (empataronLosEquipos(equipoLocal, equipoVisitante)):
         return jugarTandaDePenales(equipoLocal, equipoVisitante)
     else:
         return equipoVisitante
+    
+def jugarIdaYVueltaYDarResultados(equipoLocal: Equipo, equipoVisitante: Equipo) -> list:
+    resultado = []
+    resultado.append(ganadorEntre_IdaYVuelta(equipoLocal, equipoVisitante))
+    if(equipoLocal in resultado):
+        resultado.append(equipoVisitante)
+    else:
+        resultado.append(equipoLocal)
+    return resultado
 
 # ----------------------------------------------------------------
 
@@ -284,9 +332,15 @@ def mostrarResultado(equipoLocal: Equipo, equipoVisitante: Equipo) -> None:
 def mostrarListaDePenales(unaListaDeNumeroPenales : list[int], unEquipo: Equipo) -> None:
     print(f"{unEquipo.nombre()}: {list(map(lambda x: visualizarPenal(x), unaListaDeNumeroPenales))}")
 
-def visualizarPenal(unNumero : int) -> None:
+def visualizarPenal(unNumero : int) -> str:
     if (unNumero == 1):
         return "🟢"
     else:
         return "🔴"
 # ----------------------------------------------------------------
+
+def jugarCompeticionYGuardarResultados(competicion, nombreArchivo : str):
+    with open(nombreArchivo, "a", encoding = "utf-8") as archivo:
+        sys.stdout = archivo
+        competicion()
+    sys.stdout = sys.__stdout__

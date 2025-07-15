@@ -1,210 +1,50 @@
 import classEquipo as CE
-import classCopa as CC
 import classLiga as CL
-import sys
+import classCopa as CC
+import json
 
-calverna = CE.Equipo(
-    nombre = "Calverna"
-) # Antes "Barco"
+# Para cargar datos del archivo
+with open("equipos.json", "r") as listaEquipos:
+    equiposCargados = json.load(listaEquipos)
+    listaPrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[0]]
+    listaSegunda = [CE.Equipo(**equipo) for equipo in equiposCargados[1]]
+    listaDeCampeones = [CE.Equipo(**equipo) for equipo in equiposCargados[2]]
+    temporada = equiposCargados[3][0]
+    del equiposCargados
 
-monteluz = CE.Equipo(
-    nombre = "Monteluz"
-) # Antes "Avión"
-
-streinbruck = CE.Equipo(
-    nombre = "Streinbr"
-) # Antes "Tren"
-
-rodanor = CE.Equipo(
-    nombre = "Rodanor"
-) # Antes "Coche"
-
-novigrad = CE.Equipo(
-    nombre = "Novigrad"
-) # Antes "Bicicleta"
-
-lormont = CE.Equipo(
-    nombre = "Lormont"
-) # Antes "Moto"
-
-boravik = CE.Equipo(
-    nombre = "Boravik"
-) # Antes "Silenciadores"
-
-veltsen = CE.Equipo(
-    nombre = "Veltsen"
-) # Antes "Fumetas"
-
-victoria = CE.Equipo(
-    nombre = "Victoria"
-)
-
-valdonza = CE.Equipo(
-    nombre = "Valdonza"
-)
-
-cernovia = CE.Equipo(
-    nombre = "Cernovia"
-)
-
-pardenos = CE.Equipo(
-    nombre = "Pardenos"
-)
-
-tirana = CE.Equipo(
-    nombre = "Tirana"
-)
-
-ferrosur = CE.Equipo(
-    nombre = "Ferrosur"
-)
-
-dravus = CE.Equipo(
-    nombre = "Dravus"
-)
-
-rogar = CE.Equipo(
-    nombre = "Rogar"
-)
-
-#CE.Equipos de la Copa Internacional
-rojos = CE.Equipo(
-    nombre = "Rojos"
-)
-
-verdes = CE.Equipo(
-    nombre = "Verdes"
-)
-
-negros = CE.Equipo(
-    nombre = "Negros"
-)
-
-azules = CE.Equipo(
-    nombre = "Azules"
-)
-
-invictos = CE.Equipo(
-    nombre = "Invictos"
-)
-
-realistas = CE.Equipo(
-    nombre = "Realistas"
-)
-
-blanquinegros = CE.Equipo(
-    nombre = "Blanquinegros"
-)
-
-capitales = CE.Equipo(
-    nombre = "Capitales"
-)
-
-rapaces = CE.Equipo(
-    nombre = "Rapaces"
-)
-
-acetitas = CE.Equipo(
-    nombre = "Acetitas"
-)
-
-fuertes = CE.Equipo(
-    nombre = "Fuertes"
-)
-
-amplios = CE.Equipo(
-    nombre = "Amplios"
-)
-
-reyes = CE.Equipo(
-    nombre = "Reyes"
-)
-
-
-listaDeCampeones = [
-    calverna, #El campeon de la liga
-    monteluz, #El subcampeon de la liga
-    cernovia, #El campeon de la copa de la primera
-    #Los de otros continentes
-    rojos,
-    verdes,
-    negros,
-    azules,
-    invictos,
-    realistas,
-    blanquinegros,
-    capitales,
-    rapaces,
-    acetitas,
-    fuertes,
-    amplios,
-    reyes
-]
-
-listaPrimera = [
-    calverna,
-    monteluz,
-    streinbruck,
-    rodanor,
-    boravik,
-    lormont,
-    veltsen,
-    cernovia
-]
-
-listaSegunda = [
-    victoria,
-    valdonza,
-    pardenos,
-    ferrosur,
-    dravus,
-    rogar,
-    tirana,
-    novigrad
-]
-
-liga1 = CL.LigaPrimera(
-    participantes = listaPrimera
-)
-
-liga2 = CL.LigaSegunda(
-    participantes = listaSegunda
-)
-
-copa1 = CC.Copa(
-    participantes = listaPrimera
-)
-
-copa2 = CC.Copa(
-    participantes = listaSegunda
+exo = CL.Confederacion(
+    listaPrimeraDiv = listaPrimera,
+    listaSegundaDiv = listaSegunda
 )
 
 copaInternacional = CC.Copa(
     participantes = listaDeCampeones
 )
 
-def initialize():
-    print("¡Bienvenido a la simulación de la liga de fútbol!")
-    print("Comenzando la temporada...")
-    liga1.jugarLiga()
-    print("¡La temporada ha terminado!")
-    print("")
-    liga2.jugarLiga()
-    print("¡La temporada ha terminado!")
-    print("")
-    liga1.jugarPromocion(liga2)
-    print("")
-    liga1.reiniciarLiga()
-    liga2.reiniciarLiga()
-    print("Comienzan las copas...")
-    copa1.jugarCopa()
-    print("")
-    copa2.jugarCopa()
-    print("Comienza la copa internacional...")
-    copaInternacional.jugarCopa()
+# El programa
+def guardar():
+    global temporada
+    listaPrimeraJ = [equipo.dict() for equipo in exo.participantesDeLigaPrimera()]
+    listaSegundaJ = [equipo.dict() for equipo in exo.participantesDeLigaSegunda()]
+    listaDeCampeonesJ = [equipo.dict() for equipo in campeonesSinEquiposDePrimera() + exo.getClasificadosInternacionales()]
+    # print(listaDeCampeonesJ)
+    temporada += 1
 
-with open("ligas/test.txt", "a", encoding = "utf-8") as archivo:
-    sys.stdout = archivo
-    initialize()
+    with open("equipos.json", "w") as listaEquipos:
+        json.dump([listaPrimeraJ, listaSegundaJ, listaDeCampeonesJ, [temporada]], listaEquipos, indent = 4)
 
-sys.stdout = sys.__stdout__
+def campeonesSinEquiposDePrimera():
+    datosDeCampeones = set([equipo.nombre() for equipo in listaDeCampeones])
+    datosListaPrimera = set([equipo.nombre() for equipo in exo.participantesDeLigaPrimera()])
+    datosListaSegunda = set([equipo.nombre() for equipo in exo.participantesDeLigaSegunda()])
+    campeonesSinEquiposDePrimera = (datosDeCampeones - datosListaPrimera) - datosListaSegunda
+    return [CE.Equipo(nombre = equipo) for equipo in campeonesSinEquiposDePrimera]
+
+def main():
+    exo.jugarTodasLasCompeticionesGuardando(temporada)
+    copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada)
+    # print(list(map(lambda equipo: equipo.nombre(), campeonesSinEquiposDePrimera())))
+    # print(list(map(lambda equipo: equipo.nombre(), exo.clasificadosACopaInternacional())))
+    guardar()
+
+main()
