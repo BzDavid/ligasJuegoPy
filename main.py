@@ -2,6 +2,7 @@ import classEquipo as CE
 import classLiga as CL
 import classCopa as CC
 import json
+import os 
 
 # Para cargar datos del archivo
 with open("equipos.json", "r") as listaEquipos:
@@ -39,9 +40,31 @@ def campeonesSinEquiposDePrimera():
     campeonesSinEquiposDePrimera = (datosDeCampeones - datosListaPrimera) - datosListaSegunda
     return [CE.Equipo(nombre = equipo) for equipo in campeonesSinEquiposDePrimera]
 
-def main():
+def jugarGuardando():
     exo.jugarTodasLasCompeticionesGuardando(temporada)
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada)
     guardar()
+
+def main():
+    opcion = ""
+    print("Bienvenido a juegoLigas. Puedes guardar una simulación o solo imprimirla, ¿qué será?")
+    while True:
+        print("1: Jugar ligas y guardar")
+        print("2: Jugar ligas pero solo imprimirlas")
+        print("3: Salir y cerrar esta ventana")
+        opcion = input("Ingrese el número de alguna de las opciones: ")
+        if(opcion == "1"):
+            jugarGuardando()
+            os.startfile(r'C:/Proyectos/Python/juegoLigas/ligas')
+            input("Simulación terminada, ingrese cualquier tecla para continuar: ")
+            break
+        elif(opcion == "2"):
+            exo.jugarTodasLasCompeticionesImprimiendo(temporada)
+            input("Simulación terminada, ingrese cualquier tecla para continuar: ")
+        elif(opcion == "3"):
+            break
+        else: 
+            print("La opción seleccionada no es válida. Por favor, ingrese alguna de las opciones:")
+            print("")
 
 main()
