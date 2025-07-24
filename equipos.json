@@ -1,28 +1,28 @@
 [
     [
         {
-            "nombre": "Pardenos"
+            "nombre": "Victoria"
         },
         {
             "nombre": "Boravik"
         },
         {
-            "nombre": "Ferrosur"
-        },
-        {
             "nombre": "Streinbr"
         },
         {
-            "nombre": "Victoria"
+            "nombre": "Dravus"
         },
         {
-            "nombre": "Cernovia"
+            "nombre": "Calverna"
         },
         {
-            "nombre": "Lormont"
+            "nombre": "Rodanor"
         },
         {
             "nombre": "Valdonza"
+        },
+        {
+            "nombre": "Ferrosur"
         }
     ],
     [
@@ -33,33 +33,30 @@
             "nombre": "Novigrad"
         },
         {
-            "nombre": "Dravus"
+            "nombre": "Veltsen"
         },
         {
-            "nombre": "Rodanor"
+            "nombre": "Lormont"
         },
         {
-            "nombre": "Monteluz"
+            "nombre": "Pardenos"
         },
         {
             "nombre": "Rogar"
         },
         {
-            "nombre": "Calverna"
+            "nombre": "Cernovia"
         },
         {
-            "nombre": "Veltsen"
+            "nombre": "Monteluz"
         }
     ],
     [
         {
-            "nombre": "Aurinegros"
+            "nombre": "Reyes"
         },
         {
             "nombre": "Blanquinegros"
-        },
-        {
-            "nombre": "Reyes"
         },
         {
             "nombre": "Capitales"
@@ -68,22 +65,10 @@
             "nombre": "Verdes"
         },
         {
-            "nombre": "Realistas"
-        },
-        {
-            "nombre": "Amplios"
-        },
-        {
-            "nombre": "Invictos"
+            "nombre": "Rojos"
         },
         {
             "nombre": "Fuertes"
-        },
-        {
-            "nombre": "Acetitas"
-        },
-        {
-            "nombre": "Rojos"
         },
         {
             "nombre": "Rapaces"
@@ -92,16 +77,31 @@
             "nombre": "Azules"
         },
         {
-            "nombre": "Ferrosur"
+            "nombre": "Invictos"
+        },
+        {
+            "nombre": "Acetitas"
+        },
+        {
+            "nombre": "Aurinegros"
+        },
+        {
+            "nombre": "Realistas"
+        },
+        {
+            "nombre": "Amplios"
+        },
+        {
+            "nombre": "Victoria"
         },
         {
             "nombre": "Boravik"
         },
         {
-            "nombre": "Cernovia"
+            "nombre": "Streinbr"
         }
     ],
     [
-        1959
+        1962
     ]
 ]
