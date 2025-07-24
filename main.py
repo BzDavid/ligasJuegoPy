@@ -2,7 +2,8 @@ import classEquipo as CE
 import classLiga as CL
 import classCopa as CC
 import json
-import os 
+import os
+import sys
 
 # Para cargar datos del archivo
 with open("equipos.json", "r") as listaEquipos:
@@ -33,6 +34,18 @@ def guardar():
     with open("equipos.json", "w") as listaEquipos:
         json.dump([listaPrimeraJ, listaSegundaJ, listaDeCampeonesJ, [temporada]], listaEquipos, indent = 4)
 
+def registrarCampeones():
+    with open("ligas/Campeones.txt", "a", encoding = "utf-8") as archivo:
+        sys.stdout = archivo
+        print(f"Temporada {temporada}:")
+        print(f"🥇 - {exo.nombreDelCampeonLigaPrimera()}")
+        print(f"🏆 - {exo.nombreDelCampeonCopaPrimera()}")
+        print(f"🥈 - {exo.nombreDelCampeonLigaSegunda()}")
+        print(f"🔔 - {exo.nombreDelCampeonCopaSegunda()}")
+        print(f"⭐ - {copaInternacional.campeon().nombre()}")
+        print("")
+    sys.stdout = sys.__stdout__
+
 def campeonesSinEquiposDePrimera():
     datosDeCampeones = set([equipo.nombre() for equipo in listaDeCampeones])
     datosListaPrimera = set([equipo.nombre() for equipo in exo.participantesDeLigaPrimera()])
@@ -43,6 +56,7 @@ def campeonesSinEquiposDePrimera():
 def jugarGuardando():
     exo.jugarTodasLasCompeticionesGuardando(temporada)
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada)
+    registrarCampeones()
     guardar()
 
 def main():

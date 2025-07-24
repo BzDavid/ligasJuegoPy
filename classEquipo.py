@@ -6,6 +6,7 @@ class Liga:
         self._primerSegmentoDeEquipos = []
         self._segundoSegmentoDeEquipos = []
         self.actualizarEquiposParticipantes()
+        self._ultimoCampeon = None
 
     def primerSegmentoPorNombre(self): 
         return list(map(lambda equipo: equipo.nombre(), self._primerSegmentoDeEquipos))
@@ -36,6 +37,9 @@ class Liga:
     
     def ultimo(self):
         return self._participantes[int(len(self._participantes) - 1)]
+    
+    def ultimoCampeon(self):
+        return self._ultimoCampeon
 
     def anadirListaDeEquipos(self, unaListaDeEquipos : list) -> None:
         self._participantes.extend(unaListaDeEquipos)
@@ -86,6 +90,7 @@ class Liga:
         print("")
         self.jugarUnaVuelta()
         print("")
+        self._ultimoCampeon = self._participantes[0]
 
     def reiniciarLiga(self) -> None:
         for equipo in self._participantes:

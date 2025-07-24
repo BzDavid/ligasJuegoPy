@@ -55,6 +55,18 @@ class Confederacion:
         self.copaSegunda = CC.Copa(participantes = listaSegundaDiv)
         self._clasificadosInter = []
 
+    def nombreDelCampeonLigaPrimera(self):
+        return self.ligaPrimera.ultimoCampeon().nombre()
+
+    def nombreDelCampeonLigaSegunda(self):
+        return self.ligaSegunda.ultimoCampeon().nombre()
+
+    def nombreDelCampeonCopaPrimera(self):
+        return self.copaPrimera.campeon().nombre()
+    
+    def nombreDelCampeonCopaSegunda(self):
+        return self.copaSegunda.campeon().nombre()
+
     def jugarLigaPrimera(self, temporada):
         self.ligaPrimera.jugarLiga(temporada)
 
