@@ -69,7 +69,7 @@ def main():
         opcion = input("Ingrese el número de alguna de las opciones: ")
         if(opcion == "1"):
             jugarGuardando()
-            os.startfile(r'C:/Proyectos/Python/juegoLigas/ligas')
+            os.startfile(r"ligas/")
             input("Simulación terminada, ingrese cualquier tecla para continuar: ")
             break
         elif(opcion == "2"):

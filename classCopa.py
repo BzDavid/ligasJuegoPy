@@ -159,3 +159,4 @@ class Copa:
         sys.stdout = sys.__stdout__
  
 # TODO: Luego veo cómo implementar la ida y vuelta
+# TODO: Tengo que configurar adecuadamente las rutas de apertura de los archivos.
