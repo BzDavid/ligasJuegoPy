@@ -1,5 +1,5 @@
-import random
-import classEquipo as CE
+from random import shuffle
+import classLiga as CE
 import sys
 class Copa:
     def __init__(self, participantes) -> None:
@@ -7,7 +7,7 @@ class Copa:
         self._listaDeGrupos = []
         self._faseFinalGrupo1 = []
         self._faseFinalGrupo2 = []
-        random.shuffle(self._participantes)
+        shuffle(self._participantes)
         self.anadirParticipantesAGrupos()
         self._campeon = None
 
@@ -67,7 +67,7 @@ class Copa:
     
 
     def establecerGruposFaseFinalParaEliminacionDirecta(self) -> None:
-        random.shuffle(self._participantes)
+        shuffle(self._participantes)
         self._faseFinalGrupo1.clear()
         self._faseFinalGrupo1.extend(self._participantes[
             0 :
@@ -109,8 +109,8 @@ class Copa:
         print("Segundos que avanzan a la fase final:")
         print(self.faseFinalGrupo2PorNombre())
         print("")
-        random.shuffle(self._faseFinalGrupo1)
-        random.shuffle(self._faseFinalGrupo2)
+        shuffle(self._faseFinalGrupo1)
+        shuffle(self._faseFinalGrupo2)
     
 
     def jugarFaseEliminatoria(self) -> None:
@@ -159,4 +159,3 @@ class Copa:
         sys.stdout = sys.__stdout__
  
 # TODO: Luego veo cómo implementar la ida y vuelta
-# TODO: Tengo que configurar adecuadamente las rutas de apertura de los archivos.

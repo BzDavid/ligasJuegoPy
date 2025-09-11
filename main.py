@@ -1,5 +1,5 @@
-import classEquipo as CE
 import classLiga as CL
+import classEquipo as CE
 import classCopa as CC
 import json
 import os
@@ -82,3 +82,38 @@ def main():
             print("")
 
 main()
+
+"""
+Primero, qué es lo que que quiero hacer?
+
+main
+tengo que crear ubna liga asi puedo añladir equipos
+    podes agregar equipos
+        tengo que fijarme si funciona como deberia la opcion para agregar equipos (ya creada, ni estaba) 
+        tengo que ver si no se rompre al agregar equipos impares (no rompre, pero no funca como debería)
+        por ahora solo deja poner ligas impares
+podes simular
+podes guardar
+    guardo lo simulado o cómo?
+    guardo los equipos?
+podes agregar una liga
+    necesario para poder empear la simlucion
+podes agregar copa interancional
+    como, fijándote en cuantas ligas tenés?
+
+ideas
+peudo organizar las ligas poniendolas en un array, y los equipos dentro de ellas
+
+
+1 = ver resumen
+2 = eidtar ligas
+    1 = crear liga
+    2 = añadir equipo a liga
+    3 = eliminar equipo de liga
+3 = simular 
+4 = guardar datos
+5 = salir
+
+
+
+"""
