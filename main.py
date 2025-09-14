@@ -14,6 +14,8 @@ with open("equipos.json", "r") as listaEquipos:
     temporada = equiposCargados[3][0]
     del equiposCargados
 
+listaDeLigas = []
+
 exo = CL.Confederacion(
     listaPrimeraDiv = listaPrimera,
     listaSegundaDiv = listaSegunda
@@ -59,9 +61,18 @@ def jugarGuardando():
     registrarCampeones()
     guardar()
 
+def cargar():
+    global listaDeLigas
+    with open("equipos.json", "r") as listaEquipos:
+        equiposCargados = json.load(listaEquipos)
+        listaPrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[0]]
+        listaSegunda = [CE.Equipo(**equipo) for equipo in equiposCargados[1]]
+        listaDeCampeones = [CE.Equipo(**equipo) for equipo in equiposCargados[2]]
+        temporada = equiposCargados[3][0]
+
 def main():
     opcion = ""
-    print("Bienvenido a juegoLigas. Puedes guardar una simulación o solo imprimirla, ¿qué será?")
+    print("Bienvenido a juegoLigas.")
     while True:
         print("1: Jugar ligas y guardar")
         print("2: Jugar ligas pero solo imprimirlas")
@@ -114,6 +125,8 @@ peudo organizar las ligas poniendolas en un array, y los equipos dentro de ellas
 4 = guardar datos
 5 = salir
 
+[ligas]
 
+ligas[equipos]
 
 """

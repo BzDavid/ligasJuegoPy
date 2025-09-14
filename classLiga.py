@@ -4,7 +4,8 @@ import classEquipo as CE
 import classCopa as CC
 import logica
 class Liga:
-    def __init__(self, participantes : list):
+    def __init__(self, participantes : list, nombreDeLiga : str = "Liga"):
+        self._nombreDeLiga = nombreDeLiga
         self._participantes = participantes
         self._primerSegmentoDeEquipos = []
         self._segundoSegmentoDeEquipos = []
@@ -147,6 +148,12 @@ class Liga:
         self._segundoSegmentoDeEquipos.extend(self._participantes[
             int(len(self._participantes) - (len(self._participantes) / 2)) :
             int(len(self._participantes))])
+
+    def dict(self):
+        return {
+            "participantes" : [equipo.dict() for equipo in self._participantes],
+            "nombreDeLiga" : self._nombreDeLiga
+        }
         
     def jugarLigaGuardandoResultados(self, rutaArchivo : str, temporada : int):
         with open(rutaArchivo, "a", encoding = "utf-8") as archivo:
