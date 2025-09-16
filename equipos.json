@@ -1,65 +1,65 @@
 [
     [
         {
-            "nombre": "Victoria"
+            "nombre": "Monteluz"
+        },
+        {
+            "nombre": "Tirana"
         },
         {
             "nombre": "Boravik"
         },
         {
-            "nombre": "Streinbr"
-        },
-        {
-            "nombre": "Dravus"
-        },
-        {
-            "nombre": "Calverna"
-        },
-        {
-            "nombre": "Rodanor"
-        },
-        {
-            "nombre": "Valdonza"
-        },
-        {
-            "nombre": "Ferrosur"
-        }
-    ],
-    [
-        {
-            "nombre": "Tirana"
-        },
-        {
             "nombre": "Novigrad"
-        },
-        {
-            "nombre": "Veltsen"
-        },
-        {
-            "nombre": "Lormont"
-        },
-        {
-            "nombre": "Pardenos"
-        },
-        {
-            "nombre": "Rogar"
         },
         {
             "nombre": "Cernovia"
         },
         {
-            "nombre": "Monteluz"
+            "nombre": "Victoria"
+        },
+        {
+            "nombre": "Pardenos"
+        },
+        {
+            "nombre": "Calverna"
         }
     ],
     [
         {
+            "nombre": "Ferrosur"
+        },
+        {
+            "nombre": "Streinbr"
+        },
+        {
+            "nombre": "Rodanor"
+        },
+        {
+            "nombre": "Dravus"
+        },
+        {
+            "nombre": "Valdonza"
+        },
+        {
+            "nombre": "Lormont"
+        },
+        {
+            "nombre": "Veltsen"
+        },
+        {
+            "nombre": "Rogar"
+        }
+    ],
+    [
+        {
+            "nombre": "Aurinegros"
+        },
+        {
             "nombre": "Reyes"
         },
         {
-            "nombre": "Blanquinegros"
-        },
-        {
-            "nombre": "Capitales"
+            "nombre": "Amplios"
         },
         {
             "nombre": "Verdes"
@@ -68,40 +68,40 @@
             "nombre": "Rojos"
         },
         {
-            "nombre": "Fuertes"
+            "nombre": "Acetitas"
         },
         {
-            "nombre": "Rapaces"
-        },
-        {
-            "nombre": "Azules"
+            "nombre": "Capitales"
         },
         {
             "nombre": "Invictos"
         },
         {
-            "nombre": "Acetitas"
-        },
-        {
-            "nombre": "Aurinegros"
-        },
-        {
             "nombre": "Realistas"
         },
         {
-            "nombre": "Amplios"
+            "nombre": "Azules"
         },
         {
-            "nombre": "Victoria"
+            "nombre": "Rapaces"
+        },
+        {
+            "nombre": "Fuertes"
+        },
+        {
+            "nombre": "Blanquinegros"
+        },
+        {
+            "nombre": "Monteluz"
+        },
+        {
+            "nombre": "Calverna"
         },
         {
             "nombre": "Boravik"
-        },
-        {
-            "nombre": "Streinbr"
         }
     ],
     [
-        1962
+        1972
     ]
 ]

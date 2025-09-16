@@ -1,6 +1,7 @@
 from random import shuffle
-import classLiga as CE
+import classLiga
 import sys
+from logica import ganadorEntre_
 class Copa:
     def __init__(self, participantes) -> None:
         self._participantes = participantes
@@ -41,7 +42,7 @@ class Copa:
     def anadirParticipantesAGrupos(self) -> None:
         numeroIndice = 0
         for i in range(int(len(self._participantes) / 4)):
-            self._listaDeGrupos.append(CE.Liga(
+            self._listaDeGrupos.append(classLiga.Liga(
                 participantes = [
                     self._participantes[numeroIndice],
                     self._participantes[numeroIndice + 1],
@@ -127,7 +128,7 @@ class Copa:
     def jugarConEnfrentamientos_DelGrupoFinal_(self, listaDelNumeroDeEnfrentamientos, listaDeLaFaseFinal) -> None:
         for i in listaDelNumeroDeEnfrentamientos:
             print(f"Partido número {i + 1}")
-            listaDeLaFaseFinal.append(CE.ganadorEntre_(self._faseFinalGrupo1[i], self._faseFinalGrupo2[i]))
+            listaDeLaFaseFinal.append(ganadorEntre_(self._faseFinalGrupo1[i], self._faseFinalGrupo2[i]))
             print("==========================")
             print("")
 
@@ -139,7 +140,7 @@ class Copa:
     
     def jugarFinal(self) -> None:
         print("¡La gran final de la copa ha comenzado!")
-        self._campeon = CE.ganadorEntre_(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])
+        self._campeon = ganadorEntre_(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])
         print(f"¡{self._campeon.nombre()} es el campeón de la copa!")
         self.reiniciarCopa()
 
@@ -149,9 +150,6 @@ class Copa:
         self._faseFinalGrupo1.clear()
         self._faseFinalGrupo2.clear()
 
-    def reglasCopaInternacional(self) -> str:
-        return "Reglas de la copa internacional: La clasificación es para el campeón de la liga y de la copa principalmente. si hubiera mismo campeón de la liga y la copa, el segundo y tercer lugar de la liga acceden al torneo. si clasifica ya el subcampeón de la liga por la copa, deja abierto su puesto para que vaya el buscampeón de la copa. Es decir, la prioridad siempre es 1. Liga, 2. Copa, 3. Subcampeón de la liga. 4. Tercer lugar de la liga. 5. Subcampeón de la copa."
-    
     def jugarCopaGuardandoResultados(self, rutaArchivo : str, temporada : int):
         with open(rutaArchivo, "a", encoding = "utf-8") as archivo:
             sys.stdout = archivo

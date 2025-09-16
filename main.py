@@ -1,3 +1,4 @@
+from random import randint
 import classLiga as CL
 import classEquipo as CE
 import classCopa as CC
@@ -28,7 +29,7 @@ def guardar():
     global temporada
     listaPrimeraJ = [equipo.dict() for equipo in exo.participantesDeLigaPrimera()]
     listaSegundaJ = [equipo.dict() for equipo in exo.participantesDeLigaSegunda()]
-    listaDeCampeonesJ = [equipo.dict() for equipo in campeonesSinEquiposDePrimera() + exo.getClasificadosInternacionales()]
+    listaDeCampeonesJ = [equipo.dict() for equipo in campeonesSinEquiposDePrimera()]
     temporada += 1
 
     with open("equipos.json", "w") as listaEquipos:
@@ -46,12 +47,26 @@ def registrarCampeones():
         print("")
     sys.stdout = sys.__stdout__
 
+def campeonesDefault():
+    return ['Aurinegros', 'Reyes', 'Amplios', 'Verdes', 'Rojos', 'Acetitas', 'Capitales', 'Invictos', 'Realistas', 'Azules', 'Rapaces', 'Fuertes', 'Blanquinegros']
+
 def campeonesSinEquiposDePrimera():
+    campeonesVerificacion = campeonesDefault() + [equipo.nombre() for equipo in exo.getClasificadosInternacionales()]
+    if(copaInternacional.campeon().nombre() not in campeonesVerificacion):
+        campeonesVerificacion.pop(randint(0, 12))
+        campeonesVerificacion.append(copaInternacional.campeon().nombre())
+    return [CE.Equipo(nombre = nombreEquipo) for nombreEquipo in campeonesVerificacion]
+
+def campeonesSinEquiposDePrimera_OBS():
+    """
+    Obsoleto
+    """
     datosDeCampeones = set([equipo.nombre() for equipo in listaDeCampeones])
     datosListaPrimera = set([equipo.nombre() for equipo in exo.participantesDeLigaPrimera()])
     datosListaSegunda = set([equipo.nombre() for equipo in exo.participantesDeLigaSegunda()])
     campeonesSinEquiposDePrimera = (datosDeCampeones - datosListaPrimera) - datosListaSegunda
-    return [CE.Equipo(nombre = equipo) for equipo in campeonesSinEquiposDePrimera]
+    print(campeonesSinEquiposDePrimera)
+    return [CE.Equipo(nombre = nombreEquipo) for nombreEquipo in campeonesSinEquiposDePrimera]
 
 def jugarGuardando():
     exo.jugarTodasLasCompeticionesGuardando(temporada)
@@ -69,7 +84,7 @@ def main():
         opcion = input("Ingrese el número de alguna de las opciones: ")
         if(opcion == "1"):
             jugarGuardando()
-            os.startfile(r"ligas/")
+            os.startfile(r"ligas")
             input("Simulación terminada, ingrese cualquier tecla para continuar: ")
             break
         elif(opcion == "2"):
@@ -82,38 +97,3 @@ def main():
             print("")
 
 main()
-
-"""
-Primero, qué es lo que que quiero hacer?
-
-main
-tengo que crear ubna liga asi puedo añladir equipos
-    podes agregar equipos
-        tengo que fijarme si funciona como deberia la opcion para agregar equipos (ya creada, ni estaba) 
-        tengo que ver si no se rompre al agregar equipos impares (no rompre, pero no funca como debería)
-        por ahora solo deja poner ligas impares
-podes simular
-podes guardar
-    guardo lo simulado o cómo?
-    guardo los equipos?
-podes agregar una liga
-    necesario para poder empear la simlucion
-podes agregar copa interancional
-    como, fijándote en cuantas ligas tenés?
-
-ideas
-peudo organizar las ligas poniendolas en un array, y los equipos dentro de ellas
-
-
-1 = ver resumen
-2 = eidtar ligas
-    1 = crear liga
-    2 = añadir equipo a liga
-    3 = eliminar equipo de liga
-3 = simular 
-4 = guardar datos
-5 = salir
-
-
-
-"""
