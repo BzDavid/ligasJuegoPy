@@ -4,6 +4,7 @@ import classCopa as CC
 import json
 import os
 import sys
+from random import randint
 
 # Para cargar datos del archivo
 with open("equipos.json", "r") as listaEquipos:
@@ -46,12 +47,26 @@ def registrarCampeones():
         print("")
     sys.stdout = sys.__stdout__
 
+def campeonesDefault():
+    return ['Aurinegros', 'Reyes', 'Amplios', 'Verdes', 'Rojos', 'Acetitas', 'Capitales', 'Invictos', 'Realistas', 'Azules', 'Rapaces', 'Fuertes', 'Blanquinegros']
+
 def campeonesSinEquiposDePrimera():
+    campeonesVerificacion = campeonesDefault() + [equipo.nombre() for equipo in exo.getClasificadosInternacionales()]
+    if(copaInternacional.campeon().nombre() not in campeonesVerificacion):
+        campeonesVerificacion.pop(randint(0, 12))
+        campeonesVerificacion.append(copaInternacional.campeon().nombre())
+    return [CE.Equipo(nombre = nombreEquipo) for nombreEquipo in campeonesVerificacion]
+
+def campeonesSinEquiposDePrimera_OBS():
+    """
+    Obsoleto
+    """
     datosDeCampeones = set([equipo.nombre() for equipo in listaDeCampeones])
     datosListaPrimera = set([equipo.nombre() for equipo in exo.participantesDeLigaPrimera()])
     datosListaSegunda = set([equipo.nombre() for equipo in exo.participantesDeLigaSegunda()])
     campeonesSinEquiposDePrimera = (datosDeCampeones - datosListaPrimera) - datosListaSegunda
-    return [CE.Equipo(nombre = equipo) for equipo in campeonesSinEquiposDePrimera]
+    print(campeonesSinEquiposDePrimera)
+    return [CE.Equipo(nombre = nombreEquipo) for nombreEquipo in campeonesSinEquiposDePrimera]
 
 def jugarGuardando():
     exo.jugarTodasLasCompeticionesGuardando(temporada)

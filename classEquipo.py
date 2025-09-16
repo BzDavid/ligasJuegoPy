@@ -180,7 +180,7 @@ class Equipo:
         self._golesEnPartido = generar()
         
     def jugarProrroga(self):
-        self._golesEnPartido = max(generar() - 3, 0)
+        self._golesEnPartido = max(generar() - 2, 0)
 
     def sumarGolesEnContra(self, goles: int) -> None:
         self._golesEnContra += goles
