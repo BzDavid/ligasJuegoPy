@@ -1,5 +1,6 @@
 from random import shuffle
-import classLiga as CE
+from logica import ganadorEntre_
+import classLiga
 import sys
 class Copa:
     def __init__(self, participantes) -> None:
@@ -41,7 +42,7 @@ class Copa:
     def anadirParticipantesAGrupos(self) -> None:
         numeroIndice = 0
         for i in range(int(len(self._participantes) / 4)):
-            self._listaDeGrupos.append(CE.Liga(
+            self._listaDeGrupos.append(classLiga.Liga(
                 participantes = [
                     self._participantes[numeroIndice],
                     self._participantes[numeroIndice + 1],
@@ -127,7 +128,7 @@ class Copa:
     def jugarConEnfrentamientos_DelGrupoFinal_(self, listaDelNumeroDeEnfrentamientos, listaDeLaFaseFinal) -> None:
         for i in listaDelNumeroDeEnfrentamientos:
             print(f"Partido número {i + 1}")
-            listaDeLaFaseFinal.append(CE.ganadorEntre_(self._faseFinalGrupo1[i], self._faseFinalGrupo2[i]))
+            listaDeLaFaseFinal.append(ganadorEntre_(self._faseFinalGrupo1[i], self._faseFinalGrupo2[i]))
             print("==========================")
             print("")
 
@@ -139,7 +140,7 @@ class Copa:
     
     def jugarFinal(self) -> None:
         print("¡La gran final de la copa ha comenzado!")
-        self._campeon = CE.ganadorEntre_(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])
+        self._campeon = ganadorEntre_(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])
         print(f"¡{self._campeon.nombre()} es el campeón de la copa!")
         self.reiniciarCopa()
 
