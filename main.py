@@ -5,6 +5,7 @@ import classCopa as CC
 import json
 import os
 import sys
+from random import randint
 
 # Para cargar datos del archivo
 with open("equipos.json", "r") as listaEquipos:
