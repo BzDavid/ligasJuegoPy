@@ -1,7 +1,9 @@
 from random import shuffle
+from typing import List
 import classLiga
 import sys
-from logica import ganadorEntre_
+from logica import ganadorEntre_ParaCopas
+import classEquipo
 class Copa:
     def __init__(self, participantes) -> None:
         self._participantes = participantes
@@ -10,7 +12,9 @@ class Copa:
         self._faseFinalGrupo2 = []
         shuffle(self._participantes)
         self.anadirParticipantesAGrupos()
-        self._campeon = None
+        self._campeon = classEquipo.Equipo("NoHay")
+
+    # Funciones de retorno
 
     def _listaDeGrupos(self) -> None:
         return self._listaDeGrupos
@@ -30,14 +34,31 @@ class Copa:
     def participantes(self) -> None:
         return self._participantes
 
-    def campeon(self):
-        return self._campeon
-
-    def anadirListaDeParticipantes_(self, unaLista : list) -> None:
-        self._participantes.extend(unaLista)
-        self._listaDeGrupos.clear()
-        self.anadirParticipantesAGrupos()
+    def campeon(self) -> classEquipo.Equipo: 
+        return self._campeon  
     
+    def ListaDelCeroHastaMitadDeLaLongitudDeLaFaseFinalDelGrupo1(self) -> list:
+        "Hace una lista arrancando del cero hasta la mitad del tamaño de la lista faseFinalGrupo1"
+        "Si la lista midiera 8, la lista seria [0, 1, 2, 3] (dejando afuera el cuatro)"
+        return list(range(0, int((len(self._faseFinalGrupo1) / 2))))
+    
+    def ListaDeMitadLongitudHastaLaLongitudDeLaFaseFinalDelGrupo2(self) -> list:
+        return list(range(int(len(self._faseFinalGrupo2) / 2), len(self._faseFinalGrupo2)))
+
+    #----------------------------------------------------------------------------------
+    def jugarCopa(self, temporada : int, esConIdaYVuelta : bool) -> None:
+        "Prec. Deben haber si o si una cantidad de ligas que sean el numero dos o cualquier múltiplo de cuatro"
+        "Prec. Si modo es true, se juega con ida y vuelta"
+        print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
+        self.jugarFaseDeGrupos(esConIdaYVuelta)
+        self.jugarFaseEliminatoria(esConIdaYVuelta)
+        self.jugarFinal()
+    
+    def jugarCopaConEliminacionDirecta(self, temporada : int) -> None:
+        print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
+        self.establecerGruposFaseFinalParaEliminacionDirecta()
+        self.jugarFaseEliminatoria() 
+        self.jugarFinal()
 
     def anadirParticipantesAGrupos(self) -> None:
         numeroIndice = 0
@@ -51,21 +72,6 @@ class Copa:
                 ]
             ))
             numeroIndice += 4
-    
-
-    def jugarCopa(self, temporada : int) -> None:
-        print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
-        self.jugarFaseDeGrupos()
-        self.jugarFaseEliminatoria()
-        self.jugarFinal()
-    
-
-    def jugarCopaEliminacionDirecta(self, temporada : int) -> None:
-        print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
-        self.establecerGruposFaseFinalParaEliminacionDirecta()
-        self.jugarFaseEliminatoria() 
-        self.jugarFinal()
-    
 
     def establecerGruposFaseFinalParaEliminacionDirecta(self) -> None:
         shuffle(self._participantes)
@@ -88,16 +94,14 @@ class Copa:
             grupo.ordenarPorPuntos()
             grupo.imprimirEstadoDeLiga()
             print("")
-        numeroDeGrupo = 1
     
 
-    def jugarFaseDeGrupos(self) -> None:
+    def jugarFaseDeGrupos(self, esConIdaYVuelta : bool) -> None:
         numeroDeJornada = 1
-        for i in range(3):
+        for i in range(6 if(esConIdaYVuelta) else 3):
             print(f"Jornada número {numeroDeJornada}: ==========================")
             self.jugarFecha()
             numeroDeJornada += 1
-        numeroDeJornada = 1
         self.avanzarDeFase()
 
     def avanzarDeFase(self) -> None:
@@ -112,25 +116,29 @@ class Copa:
         print("")
         shuffle(self._faseFinalGrupo1)
         shuffle(self._faseFinalGrupo2)
-    
 
-    def jugarFaseEliminatoria(self) -> None:
+    def jugarFaseEliminatoria(self, esConIdaYVuelta : bool) -> None:
         while len(self._faseFinalGrupo1) >= 2:
-            self.jugarUNAFaseEliminatoria(len(self._faseFinalGrupo1))
+            self.jugarUNAFaseEliminatoria(len(self._faseFinalGrupo1), esConIdaYVuelta)
         
-    def jugarUNAFaseEliminatoria(self, numeroDeEquiposAEliminar) -> None:
-        self.jugarConEnfrentamientos_DelGrupoFinal_(list(range(0, int((len(self._faseFinalGrupo1) / 2)))), self._faseFinalGrupo1)
-        self.jugarConEnfrentamientos_DelGrupoFinal_(list(range(int(len(self._faseFinalGrupo2) / 2), len(self._faseFinalGrupo2))), self._faseFinalGrupo2)
+    def jugarUNAFaseEliminatoria(self, numeroDeEquiposAEliminar, esConIdaYVuelta : bool) -> None:
+        self.jugarConEnfrentamientos_DelGrupoFinal_(self.ListaDelCeroHastaMitadDeLaLongitudDeLaFaseFinalDelGrupo1(), self._faseFinalGrupo1, esConIdaYVuelta)
+        self.jugarConEnfrentamientos_DelGrupoFinal_(self.ListaDeMitadLongitudHastaLaLongitudDeLaFaseFinalDelGrupo2(), self._faseFinalGrupo2, esConIdaYVuelta)
         self.avanzarEliminatoria(numeroDeEquiposAEliminar)
         self.faseFinalGrupo1PorNombre()
 
-    
-    def jugarConEnfrentamientos_DelGrupoFinal_(self, listaDelNumeroDeEnfrentamientos, listaDeLaFaseFinal) -> None:
+    def jugarConEnfrentamientos_DelGrupoFinal_(self, listaDelNumeroDeEnfrentamientos : list, listaDeLaFaseFinal : list, esConIdaYVuelta : bool) -> None:
         for i in listaDelNumeroDeEnfrentamientos:
             print(f"Partido número {i + 1}")
-            listaDeLaFaseFinal.append(ganadorEntre_(self._faseFinalGrupo1[i], self._faseFinalGrupo2[i]))
+            self.enfrentarAlNumero_DeLAFaseFinalDeGruposYAgregarAlGanadorALista_EnModo_(i, listaDeLaFaseFinal, esConIdaYVuelta)
             print("==========================")
             print("")
+
+    def enfrentarAlNumero_DeLAFaseFinalDeGruposYAgregarAlGanadorALista_EnModo_(self, numeroDePosicion : int, listaDeLaFaseFinal: list, esConIdaYVuelta: bool):
+        if(esConIdaYVuelta):
+            listaDeLaFaseFinal.append(ganadorEntre_ParaCopas(self._faseFinalGrupo1[numeroDePosicion], self._faseFinalGrupo2[numeroDePosicion])) # TODO
+        else: 
+            listaDeLaFaseFinal.append(ganadorEntre_ParaCopas(self._faseFinalGrupo1[numeroDePosicion], self._faseFinalGrupo2[numeroDePosicion])) 
 
     def avanzarEliminatoria(self, numeroTotalDeListaPrevia) -> None:
         for equipo in self._faseFinalGrupo1[0:numeroTotalDeListaPrevia]:
@@ -138,9 +146,12 @@ class Copa:
         for equipo in self._faseFinalGrupo2[0:numeroTotalDeListaPrevia]:
             self._faseFinalGrupo2.remove(equipo)
     
-    def jugarFinal(self) -> None:
+    def jugarFinal(self, esConIdaYVuelta : bool) -> None:
         print("¡La gran final de la copa ha comenzado!")
-        self._campeon = ganadorEntre_(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])
+        if(esConIdaYVuelta):
+            self._campeon = ganadorEntre_ParaCopas(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0]) # TODO
+        else:
+            self._campeon = ganadorEntre_ParaCopas(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])
         print(f"¡{self._campeon.nombre()} es el campeón de la copa!")
         self.reiniciarCopa()
 
@@ -155,5 +166,3 @@ class Copa:
             sys.stdout = archivo
             self.jugarCopa(temporada)
         sys.stdout = sys.__stdout__
- 
-# TODO: Luego veo cómo implementar la ida y vuelta
