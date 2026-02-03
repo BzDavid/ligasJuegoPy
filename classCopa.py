@@ -52,7 +52,7 @@ class Copa:
         print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
         self.jugarFaseDeGrupos(esConIdaYVuelta)
         self.jugarFaseEliminatoria(esConIdaYVuelta)
-        self.jugarFinal()
+        self.jugarFinal(esConIdaYVuelta)
     
     def jugarCopaConEliminacionDirecta(self, temporada : int) -> None:
         print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
@@ -146,7 +146,7 @@ class Copa:
         for equipo in self._faseFinalGrupo2[0:numeroTotalDeListaPrevia]:
             self._faseFinalGrupo2.remove(equipo)
     
-    def jugarFinal(self, esConIdaYVuelta : bool) -> None:
+    def jugarFinal(self, esConIdaYVuelta : bool = False) -> None:
         print("¡La gran final de la copa ha comenzado!")
         if(esConIdaYVuelta):
             self._campeon = ganadorEntre_ParaCopas(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0]) # TODO
@@ -161,8 +161,8 @@ class Copa:
         self._faseFinalGrupo1.clear()
         self._faseFinalGrupo2.clear()
 
-    def jugarCopaGuardandoResultados(self, rutaArchivo : str, temporada : int):
+    def jugarCopaGuardandoResultados(self, rutaArchivo : str, temporada : int, esConIdaYVuelta : bool = False):
         with open(rutaArchivo, "a", encoding = "utf-8") as archivo:
             sys.stdout = archivo
-            self.jugarCopa(temporada)
+            self.jugarCopa(temporada, esConIdaYVuelta)
         sys.stdout = sys.__stdout__

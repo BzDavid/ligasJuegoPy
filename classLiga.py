@@ -29,6 +29,12 @@ class Liga:
     def participantes(self):
         return self._participantes
     
+    def topTres(self):
+        return self.topDos() + [self.tercero()]
+    
+    def topDos(self):
+        return [self.primero(), self.segundo()]
+    
     def primero(self):
         if(len(self._participantes) < 1): 
             print("No hay tantos equipos")
@@ -46,6 +52,12 @@ class Liga:
             print("No hay tantos equipos")
             return None
         return self._participantes[2]
+    
+    def cuarto(self):
+        if(len(self._participantes) < 4): 
+            print("No hay tantos equipos")
+            return None
+        return self._participantes[3]
     
     def ultimo(self):
         if(len(self._participantes) < 1): 
@@ -202,12 +214,20 @@ class LigaSegunda(Liga) :
         self._participantes.pop(0)
 
 class Confederacion:
-    def __init__(self, listaPrimeraDiv, listaSegundaDiv):
+    def __init__(self, listaPrimeraDiv, listaSegundaDiv = []):
         self.ligaPrimera = LigaPrimera(participantes = listaPrimeraDiv)
         self.ligaSegunda = LigaSegunda(participantes = listaSegundaDiv)
         self.copaPrimera = CC.Copa(participantes = listaPrimeraDiv)
         self.copaSegunda = CC.Copa(participantes = listaSegundaDiv)
         self._clasificadosInter = []
+        self._tengoPlazaDeCampeon = False
+        self.establecerConfederacionALosEquipos()
+
+    def establecerConfederacionALosEquipos(self):
+        for equipoDePrimera in self.ligaPrimera.participantes():
+            equipoDePrimera.establecerConfederacion(self)
+        for equipoDeSegunda in self.ligaSegunda.participantes():
+            equipoDeSegunda.establecerConfederacion(self)
 
     def nombreDelCampeonLigaPrimera(self):
         return self.ligaPrimera.ultimoCampeon().nombre()
@@ -242,6 +262,7 @@ class Confederacion:
         self.copaSegunda.jugarCopa(temporada)
 
     def agregarClasificadosInternacionales(self):
+        self._clasificadosInter = []
         self._clasificadosInter.extend(self.clasificadosACopaInternacionalHastaAhora())
 
     def getClasificadosInternacionales(self):
@@ -264,6 +285,12 @@ class Confederacion:
         self.agregarClasificadosInternacionales()
         self.jugarPromocion()
         self.reiniciarLigas()
+
+    def jugarCompeticionesDePrimeraImprimiendo(self, temporada : int):
+        self.jugarCopaPrimera(temporada)
+        self.jugarLigaPrimera(temporada)
+        self.agregarClasificadosInternacionales()
+        self.reiniciarLigas()
         
     def aplicarCambiosDeCategoria(self):
         equiposQueAscienden = [self.ligaSegunda.participantes()[0]]
@@ -284,7 +311,7 @@ class Confederacion:
     def participantesDeLigaSegunda(self):
         return self.ligaSegunda.participantes() 
 
-    def clasificadosACopaInternacionalHastaAhora(self):
+    """def clasificadosACopaInternacionalHastaAhora(self):
         clasificados = [self.copaPrimera.campeon()]
         if (self.ligaPrimera.primero() in clasificados):
             clasificados.append(self.ligaPrimera.segundo())
@@ -296,3 +323,15 @@ class Confederacion:
             clasificados.append(self.ligaPrimera.primero())
             clasificados.append(self.ligaPrimera.segundo())
         return clasificados
+        m duelen los ojos que hice aca no"""
+
+    def clasificadosACopaInternacionalHastaAhora(self):
+        clasificados = self.ligaPrimera.topTres() if self._tengoPlazaDeCampeon else self.ligaPrimera.topDos()
+        if (self.copaPrimera.campeon()) in clasificados:
+            clasificados.append(self.ligaPrimera.cuarto() if self._tengoPlazaDeCampeon else self.ligaPrimera.tercero())
+        else: 
+            clasificados.append(self.copaPrimera.campeon())
+        return clasificados
+    
+    def agregarUnaPlazaACopaInternacional(self):
+        self._tengoPlazaDeCampeon = True

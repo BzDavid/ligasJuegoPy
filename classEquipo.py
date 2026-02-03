@@ -11,7 +11,9 @@ class Equipo:
         self._partidosPerdidos = 0
         self._partidosEmpatados = 0
         self._partidosGlobalesJugados = 0
+        self._confederacion
 
+    
     def __str__(self):
         return self._nombre
     
@@ -53,6 +55,9 @@ class Equipo:
     def nombre(self) -> str:
         return self._nombre
     
+    def confederacion(self):
+        return self._confederacion 
+    
     def statGoles(self) -> list:
         return [self._golesAFavor, self._golesEnContra, self.diferenciaDeGoles()]
     
@@ -74,6 +79,9 @@ class Equipo:
             "DG" : self.diferenciaDeGoles(),
             "Pts" : self._puntos 
             }
+        
+    def establecerConfederacion(self, unaConfederacion) -> None:
+        self._confederacion = unaConfederacion
 
     def jugarPartidoContra_(self, unRival) -> None:
         self._golesEnPartido = generar()
