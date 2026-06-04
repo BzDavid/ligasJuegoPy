@@ -1,4 +1,5 @@
-from logica import generar
+from classLiga import Confederacion
+from classes.logica import generar
 class Equipo:
     def __init__(self, nombre: str) -> None:
         self._nombre = nombre
@@ -55,7 +56,7 @@ class Equipo:
     def nombre(self) -> str:
         return self._nombre
     
-    def confederacion(self):
+    def confederacion(self) -> Confederacion:
         return self._confederacion 
     
     def statGoles(self) -> list:

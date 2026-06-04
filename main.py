@@ -1,53 +1,62 @@
-from random import randint
-import classLiga as CL
-import classEquipo as CE
-import classCopa as CC
+import classes.classConfederacion as CL
+import classes.classEquipo as CE
+import classes.classCopa as CC
 import json
 import os
 import sys
 
+def descomprimirEquiposDeLista(listaParaDescomprimir: list[dict]) -> list[CE.Equipo]:
+    listaDescomprimida: list[CE.Equipo] = []
+    for equipo in listaParaDescomprimir:
+        listaDescomprimida.append(CE.Equipo(**equipo))
+    return listaDescomprimida
+
 # Para cargar datos del archivo de los equipos
 with open("equipos.json", "r") as listaEquipos:
-    equiposCargados = json.load(listaEquipos)
-    nortePrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[0]]
-    norteSegunda = [CE.Equipo(**equipo) for equipo in equiposCargados[1]]
-    estePrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[2]]
-    surPrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[3]]
-    oestePrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[4]]
-    listaDeCampeones = [CE.Equipo(**equipo) for equipo in equiposCargados[5]]
-    temporada = equiposCargados[6][0]
+    equiposCargados: list[list[dict]] = json.load(listaEquipos)
+    nortePrimera: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[0])
+    norteSegunda: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[1])
+    estePrimera: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[2])
+    surPrimera: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[3])
+    oestePrimera: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[4])
+    listaDeCampeones: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[5])
+    # nortePrimera: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[0]]
+    # norteSegunda: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[1]]
+    # estePrimera: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[2]]
+    # surPrimera: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[3]]
+    # oestePrimera: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[4]]
+    # listaDeCampeones: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[5]]
+    temporada: int = equiposCargados[6][0]
     del equiposCargados
 
-confederacionNorte = CL.Confederacion(
+confederacionNorte: CL.Confederacion = CL.Confederacion(
     listaPrimeraDiv = nortePrimera,
     listaSegundaDiv = norteSegunda
 )
 
-ligaEste = CL.Confederacion(listaPrimeraDiv = estePrimera)
+ligaEste: CL.Confederacion = CL.Confederacion(listaPrimeraDiv = estePrimera)
 
-ligaSur = CL.Confederacion(listaPrimeraDiv = surPrimera)
+ligaSur: CL.Confederacion = CL.Confederacion(listaPrimeraDiv = surPrimera)
 
-ligaOeste = CL.Confederacion(listaPrimeraDiv = oestePrimera)
+ligaOeste: CL.Confederacion = CL.Confederacion(listaPrimeraDiv = oestePrimera)
 
-copaInternacional = CC.Copa(
-    participantes = listaDeCampeones
-)
+copaInternacional: CC.Copa = CC.Copa(participantes = listaDeCampeones)
 
 # El programa
-def guardar():
+def guardar() -> None:
     global temporada
-    nortePrimeraDict = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaPrimera()]
-    norteSegundaDict = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaSegunda()]
-    ligaEsteDict = [equipo.dict() for equipo in ligaEste.ligaPrimera.participantes()]
-    ligaSurDict = [equipo.dict() for equipo in ligaSur.ligaPrimera.participantes()]
-    ligaOesteDict = [equipo.dict() for equipo in ligaOeste.ligaPrimera.participantes()]
-    listaDeCampeonesDict = [equipo.dict() for equipo in clasificadosACopaInternacional()]
+    nortePrimeraDict: list = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaPrimera()]
+    norteSegundaDict: list = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaSegunda()]
+    ligaEsteDict: list = [equipo.dict() for equipo in ligaEste.ligaPrimera.participantes()]
+    ligaSurDict: list = [equipo.dict() for equipo in ligaSur.ligaPrimera.participantes()]
+    ligaOesteDict: list = [equipo.dict() for equipo in ligaOeste.ligaPrimera.participantes()]
+    listaDeCampeonesDict: list = [equipo.dict() for equipo in clasificadosACopaInternacional()]
     temporada += 1
 
     with open("equipos.json", "w") as listaEquipos:
         json.dump([nortePrimeraDict, norteSegundaDict, ligaEsteDict, ligaSurDict, ligaOesteDict, listaDeCampeonesDict, [temporada]], listaEquipos, indent = 4)
 
-def registrarCampeones():
+def registrarCampeones() -> None:
     with open("ligas/Campeones.txt", "a", encoding = "utf-8") as archivo:
         sys.stdout = archivo
         print(f"Temporada {temporada}:")
@@ -59,32 +68,32 @@ def registrarCampeones():
         print("")
     sys.stdout = sys.__stdout__
 
-def campeonesSinEquiposDePrimera():
-    campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
-    return campeonesDeTodasLasConfederaciones
+# def campeonesSinEquiposDePrimera() -> list:
+#     campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
+#     return campeonesDeTodasLasConfederaciones
     
-def clasificadosACopaInternacional():
+def clasificadosACopaInternacional() -> list:
     campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
     return campeonesDeTodasLasConfederaciones 
 
-def jugarGuardando():
+def jugarGuardando() -> None:
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada, True)
     confederacionNorte.jugarTodasLasCompeticionesGuardando(temporada)
-    #copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
+    copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
     ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
     registrarCampeones()
     guardar()
 
-def jugarImprimiendo():
+def jugarImprimiendo() -> None:
     copaInternacional.jugarCopa(temporada, True)
     confederacionNorte.jugarTodasLasCompeticionesImprimiendo(temporada)
     ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
 
-def main():
+def main() -> None:
     opcion = ""
     print("Bienvenido a juegoLigas, una simulacion sencilla de una liga. Puedes guardar una simulación o solo imprimirla. Elige tu preferencia a continuación, ingresando el número y luego presionando enter:")
     while 1 + 1 == 2:
@@ -106,41 +115,5 @@ def main():
             print("La opción seleccionada no es válida. Por favor, ingrese alguna de las opciones:")
             print("")
 
-main()
-
-"""
-Primero, qué es lo que que quiero hacer?
-
-main
-tengo que crear ubna liga asi puedo añladir equipos
-    podes agregar equipos
-        tengo que fijarme si funciona como deberia la opcion para agregar equipos (ya creada, ni estaba) 
-        tengo que ver si no se rompre al agregar equipos impares (no rompre, pero no funca como debería)
-        por ahora solo deja poner ligas impares
-podes simular
-podes guardar
-    guardo lo simulado o cómo?
-    guardo los equipos?
-podes agregar una liga
-    necesario para poder empear la simlucion
-podes agregar copa interancional
-    como, fijándote en cuantas ligas tenés?
-
-ideas
-peudo organizar las ligas poniendolas en un array, y los equipos dentro de ellas
-
-
-1 = ver resumen
-2 = eidtar ligas
-    1 = crear liga
-    2 = añadir equipo a liga
-    3 = eliminar equipo de liga
-3 = simular 
-4 = guardar datos
-5 = salir
-
-[ligas]
-
-ligas[equipos]
-
-"""
+if __name__ == "__main__":
+    main()

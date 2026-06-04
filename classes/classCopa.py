@@ -1,9 +1,9 @@
 from random import shuffle
-from logica import ganadorEntre_
-import classLiga
+from classes.logica import ganadorEntre_
+import classLiga as classLiga
 import sys
-from logica import ganadorEntre_ParaCopas
-import classEquipo
+from classes.logica import ganadorEntre_ParaCopas
+import classEquipo as classEquipo
 class Copa:
     def __init__(self, participantes) -> None:
         self._participantes = participantes
@@ -16,7 +16,7 @@ class Copa:
 
     # Funciones de retorno
 
-    def _listaDeGrupos(self) -> None:
+    def _listaDeGrupos(self) -> list:
         return self._listaDeGrupos
 
     def faseFinalGrupo1(self) -> None:

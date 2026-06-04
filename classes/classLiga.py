@@ -4,13 +4,13 @@ import classEquipo as CE
 import classCopa as CC
 import logica
 class Liga:
-    def __init__(self, participantes : list, nombreDeLiga : str = "Liga"):
-        self._nombreDeLiga = nombreDeLiga
-        self._participantes = participantes
-        self._primerSegmentoDeEquipos = []
-        self._segundoSegmentoDeEquipos = []
+    def __init__(self, participantes: list[CE.Equipo], nombreDeLiga: str = "Liga"):
+        self._nombreDeLiga: str = nombreDeLiga
+        self._participantes: list[CE.Equipo] = participantes
+        self._primerSegmentoDeEquipos: list[CE.Equipo] = []
+        self._segundoSegmentoDeEquipos: list[CE.Equipo] = []
         self.actualizarEquiposParticipantes()
-        self._ultimoCampeon = None
+        self._ultimoCampeon: CE.Equipo = None
 
     def primerSegmentoPorNombre(self): 
         return list(map(lambda equipo: equipo.nombre(), self._primerSegmentoDeEquipos))
@@ -27,7 +27,7 @@ class Liga:
     def primerSegmentoDeEquipos(self):
         return self._primerSegmentoDeEquipos
 
-    def participantes(self):
+    def participantes(self) -> list[CE.Equipo]:
         return self._participantes
     
     def topTres(self):
@@ -199,8 +199,8 @@ class LigaPrimera(Liga):
         self._participantes.pop(int(len(self._participantes) - 1))
         self._participantes.pop(int(len(self._participantes) - 1))
 
-class LigaSegunda(Liga) :
-    def __init__(self, participantes):
+class LigaSegunda(Liga):
+    def __init__(self, participantes: list):
         super().__init__(participantes)
 
     def jugarLiga(self, temporada : int):
@@ -221,61 +221,61 @@ class LigaSegunda(Liga) :
         self._participantes.pop(0)
 
 class Confederacion:
-    def __init__(self, listaPrimeraDiv, listaSegundaDiv = []):
-        self.ligaPrimera = LigaPrimera(participantes = listaPrimeraDiv)
-        self.ligaSegunda = LigaSegunda(participantes = listaSegundaDiv)
-        self.copaPrimera = CC.Copa(participantes = listaPrimeraDiv)
-        self.copaSegunda = CC.Copa(participantes = listaSegundaDiv)
-        self._clasificadosInter = []
-        self._tengoPlazaDeCampeon = False
+    def __init__(self, listaPrimeraDiv: list[CE.Equipo], listaSegundaDiv: list[CE.Equipo] = []) -> None:
+        self.ligaPrimera: LigaPrimera = LigaPrimera(participantes = listaPrimeraDiv)
+        self.ligaSegunda: LigaSegunda = LigaSegunda(participantes = listaSegundaDiv)
+        self.copaPrimera: CC.Copa = CC.Copa(participantes = listaPrimeraDiv)
+        self.copaSegunda: CC.Copa = CC.Copa(participantes = listaSegundaDiv)
+        self._clasificadosInter: list = []
+        self._tengoPlazaDeCampeon: bool = False
         self.establecerConfederacionALosEquipos()
 
-    def establecerConfederacionALosEquipos(self):
+    def establecerConfederacionALosEquipos(self) -> None:
         for equipoDePrimera in self.ligaPrimera.participantes():
             equipoDePrimera.establecerConfederacion(self)
         for equipoDeSegunda in self.ligaSegunda.participantes():
             equipoDeSegunda.establecerConfederacion(self)
 
-    def nombreDelCampeonLigaPrimera(self):
+    def nombreDelCampeonLigaPrimera(self) -> str:
         return self.ligaPrimera.ultimoCampeon().nombre()
 
-    def nombreDelCampeonLigaSegunda(self):
+    def nombreDelCampeonLigaSegunda(self) -> str:
         return self.ligaSegunda.ultimoCampeon().nombre()
 
-    def nombreDelCampeonCopaPrimera(self):
+    def nombreDelCampeonCopaPrimera(self) -> str:
         return self.copaPrimera.campeon().nombre()
     
-    def nombreDelCampeonCopaSegunda(self):
+    def nombreDelCampeonCopaSegunda(self) -> str:
         return self.copaSegunda.campeon().nombre()
 
-    def jugarLigaPrimera(self, temporada):
+    def jugarLigaPrimera(self, temporada) -> None:
         self.ligaPrimera.jugarLiga(temporada)
 
-    def jugarLigaSegunda(self, temporada):
+    def jugarLigaSegunda(self, temporada) -> None:
         self.ligaSegunda.jugarLiga(temporada)
         
-    def jugarPromocion(self):
+    def jugarPromocion(self) -> None:
         self.aplicarCambiosDeCategoria()
         print("")
         
-    def reiniciarLigas(self):
+    def reiniciarLigas(self) -> None:
         self.ligaPrimera.reiniciarLiga()
         self.ligaSegunda.reiniciarLiga()
         
-    def jugarCopaPrimera(self, temporada):
+    def jugarCopaPrimera(self, temporada) -> None:
         self.copaPrimera.jugarCopa(temporada)
 
-    def jugarCopaSegunda(self, temporada):  
+    def jugarCopaSegunda(self, temporada) -> None:  
         self.copaSegunda.jugarCopa(temporada)
 
-    def agregarClasificadosInternacionales(self):
+    def agregarClasificadosInternacionales(self) -> None:
         self._clasificadosInter = []
         self._clasificadosInter.extend(self.clasificadosACopaInternacionalHastaAhora())
 
-    def getClasificadosInternacionales(self):
+    def getClasificadosInternacionales(self) -> list:
         return self._clasificadosInter
 
-    def jugarTodasLasCompeticionesGuardando(self, temporada : int):
+    def jugarTodasLasCompeticionesGuardando(self, temporada : int) -> None:
         self.copaPrimera.jugarCopaGuardandoResultados("ligas/Copa_1_Resultados.txt", temporada)
         self.copaSegunda.jugarCopaGuardandoResultados("ligas/Copa_2_Resultados.txt", temporada)
         self.ligaPrimera.jugarLigaGuardandoResultados("ligas/Liga_1_Resultados.txt", temporada)
@@ -284,7 +284,7 @@ class Confederacion:
         logica.jugarCompeticionYGuardarResultados(self.jugarPromocion, "ligas/Liga_2_Resultados.txt")
         self.reiniciarLigas()
 
-    def jugarTodasLasCompeticionesImprimiendo(self, temporada : int):
+    def jugarTodasLasCompeticionesImprimiendo(self, temporada : int) -> None:
         self.jugarCopaPrimera(temporada)
         self.jugarCopaSegunda(temporada)
         self.jugarLigaPrimera(temporada)
@@ -293,14 +293,14 @@ class Confederacion:
         self.jugarPromocion()
         self.reiniciarLigas()
 
-    def jugarCompeticionesDePrimeraImprimiendo(self, temporada : int):
+    def jugarCompeticionesDePrimeraImprimiendo(self, temporada : int) -> None:
         self.jugarCopaPrimera(temporada)
         self.jugarLigaPrimera(temporada)
         print(self.ligaPrimera.ultimoCampeon().nombre())
         self.agregarClasificadosInternacionales()
         self.reiniciarLigas()
         
-    def aplicarCambiosDeCategoria(self):
+    def aplicarCambiosDeCategoria(self) -> None:
         equiposQueAscienden = [self.ligaSegunda.participantes()[0]]
         equiposQueDescienden = [self.ligaPrimera.participantes()[int(len(self.ligaPrimera.participantes()) - 1)]]
         ligaTemporal = self.ligaPrimera.jugarPromocion(self.ligaSegunda)
@@ -341,5 +341,5 @@ class Confederacion:
             clasificados.append(self.copaPrimera.campeon())
         return clasificados
     
-    def agregarUnaPlazaACopaInternacional(self):
+    def agregarUnaPlazaACopaInternacional(self) -> None:
         self._tengoPlazaDeCampeon = True
