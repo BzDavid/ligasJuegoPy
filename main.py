@@ -1,3 +1,4 @@
+from random import randint
 import classLiga as CL
 import classEquipo as CE
 import classCopa as CC
@@ -5,21 +6,28 @@ import json
 import os
 import sys
 
-# Para cargar datos del archivo
+# Para cargar datos del archivo de los equipos
 with open("equipos.json", "r") as listaEquipos:
     equiposCargados = json.load(listaEquipos)
-    listaPrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[0]]
-    listaSegunda = [CE.Equipo(**equipo) for equipo in equiposCargados[1]]
-    listaDeCampeones = [CE.Equipo(**equipo) for equipo in equiposCargados[2]]
-    temporada = equiposCargados[3][0]
+    nortePrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[0]]
+    norteSegunda = [CE.Equipo(**equipo) for equipo in equiposCargados[1]]
+    estePrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[2]]
+    surPrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[3]]
+    oestePrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[4]]
+    listaDeCampeones = [CE.Equipo(**equipo) for equipo in equiposCargados[5]]
+    temporada = equiposCargados[6][0]
     del equiposCargados
 
-listaDeLigas = []
-
-exo = CL.Confederacion(
-    listaPrimeraDiv = listaPrimera,
-    listaSegundaDiv = listaSegunda
+confederacionNorte = CL.Confederacion(
+    listaPrimeraDiv = nortePrimera,
+    listaSegundaDiv = norteSegunda
 )
+
+ligaEste = CL.Confederacion(listaPrimeraDiv = estePrimera)
+
+ligaSur = CL.Confederacion(listaPrimeraDiv = surPrimera)
+
+ligaOeste = CL.Confederacion(listaPrimeraDiv = oestePrimera)
 
 copaInternacional = CC.Copa(
     participantes = listaDeCampeones
@@ -28,63 +36,68 @@ copaInternacional = CC.Copa(
 # El programa
 def guardar():
     global temporada
-    listaPrimeraJ = [equipo.dict() for equipo in exo.participantesDeLigaPrimera()]
-    listaSegundaJ = [equipo.dict() for equipo in exo.participantesDeLigaSegunda()]
-    listaDeCampeonesJ = [equipo.dict() for equipo in campeonesSinEquiposDePrimera() + exo.getClasificadosInternacionales()]
+    nortePrimeraDict = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaPrimera()]
+    norteSegundaDict = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaSegunda()]
+    ligaEsteDict = [equipo.dict() for equipo in ligaEste.participantes()]
+    ligaSurDict = [equipo.dict() for equipo in ligaSur.participantes()]
+    ligaOesteDict = [equipo.dict() for equipo in ligaOeste.participantes()]
+    listaDeCampeonesDict = [equipo.dict() for equipo in clasificadosACopaInternacional()]
     temporada += 1
 
     with open("equipos.json", "w") as listaEquipos:
-        json.dump([listaPrimeraJ, listaSegundaJ, listaDeCampeonesJ, [temporada]], listaEquipos, indent = 4)
+        json.dump([nortePrimeraDict, norteSegundaDict, ligaEsteDict, ligaSurDict, ligaOesteDict, listaDeCampeonesDict, [temporada]], listaEquipos, indent = 4)
 
 def registrarCampeones():
     with open("ligas/Campeones.txt", "a", encoding = "utf-8") as archivo:
         sys.stdout = archivo
         print(f"Temporada {temporada}:")
-        print(f"🥇 - {exo.nombreDelCampeonLigaPrimera()}")
-        print(f"🏆 - {exo.nombreDelCampeonCopaPrimera()}")
-        print(f"🥈 - {exo.nombreDelCampeonLigaSegunda()}")
-        print(f"🔔 - {exo.nombreDelCampeonCopaSegunda()}")
+        print(f"🥇 - {confederacionNorte.nombreDelCampeonLigaPrimera()}")
+        print(f"🏆 - {confederacionNorte.nombreDelCampeonCopaPrimera()}")
+        print(f"🥈 - {confederacionNorte.nombreDelCampeonLigaSegunda()}")
+        print(f"🔔 - {confederacionNorte.nombreDelCampeonCopaSegunda()}")
         print(f"⭐ - {copaInternacional.campeon().nombre()}")
         print("")
     sys.stdout = sys.__stdout__
 
 def campeonesSinEquiposDePrimera():
-    datosDeCampeones = set([equipo.nombre() for equipo in listaDeCampeones])
-    datosListaPrimera = set([equipo.nombre() for equipo in exo.participantesDeLigaPrimera()])
-    datosListaSegunda = set([equipo.nombre() for equipo in exo.participantesDeLigaSegunda()])
-    campeonesSinEquiposDePrimera = (datosDeCampeones - datosListaPrimera) - datosListaSegunda
-    return [CE.Equipo(nombre = equipo) for equipo in campeonesSinEquiposDePrimera]
+    campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
+    return campeonesDeTodasLasConfederaciones
+    
+def clasificadosACopaInternacional():
+    campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
+    return campeonesDeTodasLasConfederaciones 
 
 def jugarGuardando():
-    exo.jugarTodasLasCompeticionesGuardando(temporada)
-    copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada)
+    copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada, True)
+    copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
+    ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
+    ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
+    ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
     registrarCampeones()
     guardar()
 
-def cargar():
-    global listaDeLigas
-    with open("equipos.json", "r") as listaEquipos:
-        equiposCargados = json.load(listaEquipos)
-        listaPrimera = [CE.Equipo(**equipo) for equipo in equiposCargados[0]]
-        listaSegunda = [CE.Equipo(**equipo) for equipo in equiposCargados[1]]
-        listaDeCampeones = [CE.Equipo(**equipo) for equipo in equiposCargados[2]]
-        temporada = equiposCargados[3][0]
+def jugarImprimiendo():
+    copaInternacional.jugarCopa(temporada, True)
+    confederacionNorte.jugarTodasLasCompeticionesImprimiendo(temporada)
+    ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
+    ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
+    ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
 
 def main():
     opcion = ""
-    print("Bienvenido a juegoLigas.")
-    while True:
-        print("1: Jugar ligas y guardar")
-        print("2: Jugar ligas pero solo imprimirlas")
-        print("3: Salir y cerrar esta ventana")
+    print("Bienvenido a juegoLigas, una simulacion sencilla de una liga. Puedes guardar una simulación o solo imprimirla. Elige tu preferencia a continuación, ingresando el número y luego presionando enter:")
+    while 1 + 1 == 2:
+        print("[1]: Jugar ligas y guardar el progreso")
+        print("[2]: Jugar ligas pero solo imprimirlas")
+        print("[3]: Salir y cerrar esta ventana")
         opcion = input("Ingrese el número de alguna de las opciones: ")
         if(opcion == "1"):
             jugarGuardando()
-            os.startfile(r"ligas/")
-            input("Simulación terminada, ingrese cualquier tecla para continuar: ")
-            break
+            os.startfile(r"ligas")
+            input("Simulación terminada, se abrió la carpeta en donde se encuentra la simulación. " \
+            "ingrese cualquier tecla para continuar: ")
         elif(opcion == "2"):
-            exo.jugarTodasLasCompeticionesImprimiendo(temporada)
+            jugarImprimiendo()
             input("Simulación terminada, ingrese cualquier tecla para continuar: ")
         elif(opcion == "3"):
             break
