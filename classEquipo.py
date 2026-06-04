@@ -11,7 +11,7 @@ class Equipo:
         self._partidosPerdidos = 0
         self._partidosEmpatados = 0
         self._partidosGlobalesJugados = 0
-        self._confederacion
+        self._confederacion = None
 
     
     def __str__(self):

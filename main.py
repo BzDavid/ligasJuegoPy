@@ -23,11 +23,11 @@ confederacionNorte = CL.Confederacion(
     listaSegundaDiv = norteSegunda
 )
 
-ligaEste = CL.Confederacion(participantes = estePrimera)
+ligaEste = CL.Confederacion(listaPrimeraDiv = estePrimera)
 
-ligaSur = CL.Confederacion(participantes = surPrimera)
+ligaSur = CL.Confederacion(listaPrimeraDiv = surPrimera)
 
-ligaOeste = CL.Confederacion(participantes = oestePrimera)
+ligaOeste = CL.Confederacion(listaPrimeraDiv = oestePrimera)
 
 copaInternacional = CC.Copa(
     participantes = listaDeCampeones
@@ -62,14 +62,7 @@ def registrarCampeones():
 def campeonesSinEquiposDePrimera():
     campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
     return campeonesDeTodasLasConfederaciones
-    """
-    campeonesVerificacion = campeonesDefault() + [equipo.nombre() for equipo in confederacionNorte.getClasificadosInternacionales()]
-    if(copaInternacional.campeon().nombre() not in campeonesVerificacion):
-        campeonesVerificacion.pop(randint(0, 12))
-        campeonesVerificacion.append(copaInternacional.campeon().nombre())
-    return [CE.Equipo(nombre = nombreEquipo) for nombreEquipo in campeonesVerificacion]
-    """
-
+    
 def clasificadosACopaInternacional():
     campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
     return campeonesDeTodasLasConfederaciones 
@@ -77,7 +70,9 @@ def clasificadosACopaInternacional():
 def jugarGuardando():
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada, True)
     copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
-    confederacionNorte.jugarTodasLasCompeticionesGuardando(temporada)
+    ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
+    ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
+    ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
     registrarCampeones()
     guardar()
 

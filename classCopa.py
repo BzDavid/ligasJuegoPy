@@ -1,5 +1,4 @@
 from random import shuffle
-from typing import List
 import classLiga
 import sys
 from logica import ganadorEntre_ParaCopas
@@ -46,19 +45,19 @@ class Copa:
         return list(range(int(len(self._faseFinalGrupo2) / 2), len(self._faseFinalGrupo2)))
 
     #----------------------------------------------------------------------------------
-    def jugarCopa(self, temporada : int, esConIdaYVuelta : bool) -> None:
+    def jugarCopa(self, temporada : int, esConIdaYVuelta : bool = False) -> None:
         "Prec. Deben haber si o si una cantidad de ligas que sean el numero dos o cualquier múltiplo de cuatro"
-        "Prec. Si modo es true, se juega con ida y vuelta"
+        "Prec. Si esConIdaYVuelta es true, se juega con ida y vuelta"
         print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
         self.jugarFaseDeGrupos(esConIdaYVuelta)
         self.jugarFaseEliminatoria(esConIdaYVuelta)
         self.jugarFinal(esConIdaYVuelta)
     
-    def jugarCopaConEliminacionDirecta(self, temporada : int) -> None:
+    def jugarCopaConEliminacionDirecta(self, temporada : int, esConIdaYVuelta : bool = False) -> None:
         print(f"\n🟢🟢🟡🟡🔴🔴 Comenzando la copa de la temporada número {temporada}...")
         self.establecerGruposFaseFinalParaEliminacionDirecta()
-        self.jugarFaseEliminatoria() 
-        self.jugarFinal()
+        self.jugarFaseEliminatoria(esConIdaYVuelta) 
+        self.jugarFinal(esConIdaYVuelta)
 
     def anadirParticipantesAGrupos(self) -> None:
         numeroIndice = 0

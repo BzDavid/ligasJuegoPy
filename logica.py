@@ -27,26 +27,28 @@ def jugarPartido(equipoLocal, equipoVisitante) -> None: # Para la liga
         equipoVisitante.gana(equipoLocal)
     mostrarResultado(equipoLocal, equipoVisitante)
 
-def ganadorEntre_(equipoLocal , equipoVisitante):
+def ganadorEntre_(equipoLocal , equipoVisitante, verResultado : bool = True):
     equipoLocal.jugarPartidoEspecial()
     equipoVisitante.jugarPartidoEspecial()
-    mostrarResultado(equipoLocal, equipoVisitante)
+    if (verResultado):
+        mostrarResultado(equipoLocal, equipoVisitante)
     if (ganoElLocal(equipoLocal, equipoVisitante)):
         return equipoLocal
     elif (empataronLosEquipos(equipoLocal, equipoVisitante)):
-        return jugarProrroga(equipoLocal, equipoVisitante)
+        return jugarProrroga(equipoLocal, equipoVisitante, verResultado)
     else:
         return equipoVisitante
 
-def jugarProrroga(equipoLocal, equipoVisitante):
-    print("Es empate, procediendo a la prórroga: ") 
+def jugarProrroga(equipoLocal, equipoVisitante, verResultado : bool = True):
     equipoLocal.jugarProrroga()
     equipoVisitante.jugarProrroga()
-    mostrarResultadoConSuspenso(equipoLocal, equipoVisitante)
+    if (verResultado):
+        print("Es empate, procediendo a la prórroga: ")
+        mostrarResultadoConSuspenso(equipoLocal, equipoVisitante)
     if (ganoElLocal(equipoLocal, equipoVisitante)):
         return equipoLocal
     elif (empataronLosEquipos(equipoLocal, equipoVisitante)):
-        return jugarTandaDePenales(equipoLocal, equipoVisitante)
+        return jugarTandaDePenales(equipoLocal, equipoVisitante, verResultado)
     else:
         return equipoVisitante
 
@@ -61,7 +63,17 @@ def ganadorEntre_ParaCopas(equipoLocal , equipoVisitante):
     else:
         return equipoVisitante
 
-def ganadorEntre_IdaYVuelta(equipoLocal , equipoVisitante):
+def jugarIdaYVueltaYDarResultados(equipoLocal, equipoVisitante) -> list:
+    "El primero de la lista es el hipotético ganador"
+    resultado = []
+    resultado.append(ganadorEntre_IdaYVuelta(equipoLocal, equipoVisitante))
+    if(equipoLocal in resultado):
+        resultado.append(equipoVisitante)
+    else:
+        resultado.append(equipoLocal)
+    return resultado
+
+def ganadorEntre_IdaYVuelta(equipoLocal , equipoVisitante): # Función auxiliar, me maté pensando que servia para otra cosa mas que solo la func de arriba.
     for i in range(2):
         equipoLocal.jugarPartidoIYV()
         equipoVisitante.jugarPartidoIYV()
@@ -75,16 +87,6 @@ def ganadorEntre_IdaYVuelta(equipoLocal , equipoVisitante):
     else:
         return equipoVisitante
     
-def jugarIdaYVueltaYDarResultados(equipoLocal, equipoVisitante) -> list:
-    "El primero de la lista es el hipotético ganador"
-    resultado = []
-    resultado.append(ganadorEntre_IdaYVuelta(equipoLocal, equipoVisitante))
-    if(equipoLocal in resultado):
-        resultado.append(equipoVisitante)
-    else:
-        resultado.append(equipoLocal)
-    return resultado
-
 # ----------------------------------------------------------------
 
 # Esto es lo que era el objeto "resultadosPenales" ---------------
@@ -98,13 +100,14 @@ def golesTotalesLocal() -> int:
 def golesTotalesVisitante() -> int:
     return sum(golesVisitante)
 
-def jugarTandaDePenales(equipoLocal, equipoVisitante):
+def jugarTandaDePenales(equipoLocal, equipoVisitante, verResultado : bool = True):
     reiniciarTandaDePenales()
     for i in range(5):
         jugarUnaRondaDeTandaDePenales()
     jugarUnaRondaMasDePenalesSiEsNecesario()
-    print("Resultados de la tanda de penales: ")
-    mostrarResultadosDePenales(equipoLocal, equipoVisitante)
+    if (verResultado):
+        print("Resultados de la tanda de penales: ")
+        mostrarResultadosDePenales(equipoLocal, equipoVisitante)
     return quienGanoTandaDePenales(equipoLocal, equipoVisitante)
     
 
@@ -158,8 +161,12 @@ def visualizarPenal(unNumero : int) -> str:
     
 def mostrarResultadoDeEncuentroIYV(equipoLocal, equipoVisitante, numeroDeEnfrentamiento : int):
     if(numeroDeEnfrentamiento == 0):
+        print(f"{equipoLocal.nombre()} [{equipoLocal.golesEnPartido()}]")
+        print(f"{equipoVisitante.nombre()} [{equipoVisitante.golesEnPartido()}]")
         print(f"Global: {equipoLocal.nombre()} [{equipoLocal.golesGlobales()}] - [{equipoVisitante.golesGlobales()}] {equipoVisitante.nombre()}")
     else:
+        print(f"{equipoVisitante.nombre()} [{equipoVisitante.golesEnPartido()}]")
+        print(f"{equipoLocal.nombre()} [{equipoLocal.golesEnPartido()}]")
         print(f"Global: {equipoVisitante.nombre()} [{equipoVisitante.golesGlobales()}] - [{equipoLocal.golesGlobales()}] {equipoLocal.nombre()}")
 # ----------------------------------------------------------------
 
