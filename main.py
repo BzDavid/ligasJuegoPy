@@ -38,9 +38,9 @@ def guardar():
     global temporada
     nortePrimeraDict = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaPrimera()]
     norteSegundaDict = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaSegunda()]
-    ligaEsteDict = [equipo.dict() for equipo in ligaEste.participantes()]
-    ligaSurDict = [equipo.dict() for equipo in ligaSur.participantes()]
-    ligaOesteDict = [equipo.dict() for equipo in ligaOeste.participantes()]
+    ligaEsteDict = [equipo.dict() for equipo in ligaEste.ligaPrimera.participantes()]
+    ligaSurDict = [equipo.dict() for equipo in ligaSur.ligaPrimera.participantes()]
+    ligaOesteDict = [equipo.dict() for equipo in ligaOeste.ligaPrimera.participantes()]
     listaDeCampeonesDict = [equipo.dict() for equipo in clasificadosACopaInternacional()]
     temporada += 1
 
@@ -69,7 +69,8 @@ def clasificadosACopaInternacional():
 
 def jugarGuardando():
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada, True)
-    copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
+    confederacionNorte.jugarTodasLasCompeticionesGuardando(temporada)
+    #copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
     ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)

@@ -128,7 +128,7 @@ class Equipo:
         self._partidosGlobalesJugados += 1
 
     def sumarGolesActualesAGolesGlobales(self) -> None:
-        self._golesGlobales += self.golesEnPartido
+        self._golesGlobales += self._golesEnPartido
 
     def reiniciarGolesGlobales(self) -> None:
         self._golesGlobales = 0

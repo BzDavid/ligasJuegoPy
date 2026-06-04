@@ -296,6 +296,7 @@ class Confederacion:
     def jugarCompeticionesDePrimeraImprimiendo(self, temporada : int):
         self.jugarCopaPrimera(temporada)
         self.jugarLigaPrimera(temporada)
+        print(self.ligaPrimera.ultimoCampeon().nombre())
         self.agregarClasificadosInternacionales()
         self.reiniciarLigas()
         

@@ -12,7 +12,7 @@ class Copa:
         self._faseFinalGrupo2 = []
         shuffle(self._participantes)
         self.anadirParticipantesAGrupos()
-        self._campeon = classEquipo.Equipo("NoHay")
+        self._campeon = None
 
     # Funciones de retorno
 
@@ -64,14 +64,13 @@ class Copa:
         numeroIndice = 0
         for i in range(int(len(self._participantes) / 4)):
             self._listaDeGrupos.append(classLiga.Liga(
-            self._listaDeGrupos.append(classLiga.Liga(
                 participantes = [
                     self._participantes[numeroIndice],
                     self._participantes[numeroIndice + 1],
                     self._participantes[numeroIndice + 2],
                     self._participantes[numeroIndice + 3]
-                ]
-            ))
+                ])
+            )
             numeroIndice += 4
 
     def establecerGruposFaseFinalParaEliminacionDirecta(self) -> None:
