@@ -1,5 +1,5 @@
-import classLiga as CL
-class LigaSegunda(CL.Liga):
+from classLiga import Liga
+class LigaSegunda(Liga):
     def __init__(self, participantes: list):
         super().__init__(participantes)
 

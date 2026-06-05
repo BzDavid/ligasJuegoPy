@@ -1,9 +1,8 @@
-from random import shuffle
-from classes.logica import ganadorEntre_
-import classLiga as classLiga
 import sys
-from classes.logica import ganadorEntre_ParaCopas
-import classEquipo as classEquipo
+from random import shuffle
+from logica import ganadorEntre_ParaCopas
+from classLiga import Liga
+from classEquipo import Equipo
 class Copa:
     def __init__(self, participantes) -> None:
         self._participantes = participantes
@@ -34,7 +33,7 @@ class Copa:
     def participantes(self) -> None:
         return self._participantes
 
-    def campeon(self) -> classEquipo.Equipo: 
+    def campeon(self) -> Equipo: 
         return self._campeon  
     
     def ListaDelCeroHastaMitadDeLaLongitudDeLaFaseFinalDelGrupo1(self) -> list:
@@ -63,7 +62,7 @@ class Copa:
     def anadirParticipantesAGrupos(self) -> None:
         numeroIndice = 0
         for i in range(int(len(self._participantes) / 4)):
-            self._listaDeGrupos.append(classLiga.Liga(
+            self._listaDeGrupos.append(Liga(
                 participantes = [
                     self._participantes[numeroIndice],
                     self._participantes[numeroIndice + 1],

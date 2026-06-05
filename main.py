@@ -1,6 +1,6 @@
-import classes.classConfederacion as CL
-import classes.classEquipo as CE
-import classes.classCopa as CC
+import classConfederacion as CL
+import classEquipo as CE
+import classCopa as CC
 import json
 import os
 import sys

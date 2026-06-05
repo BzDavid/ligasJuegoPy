@@ -1,14 +1,15 @@
-import classCopa as CC
-import classLigaPrimera as LP
-import classLigaSegunda as LS
-import classEquipo as CE
+from classCopa import Copa
+from classLigaPrimera import LigaPrimera
+from classLigaSegunda import LigaSegunda
+from classEquipo import Equipo
 from logica import jugarCompeticionYGuardarResultados
+
 class Confederacion:
-    def __init__(self, listaPrimeraDiv: list[CE.Equipo], listaSegundaDiv: list[CE.Equipo] = []) -> None:
-        self.ligaPrimera: LP.LigaPrimera = LP.LigaPrimera(participantes = listaPrimeraDiv)
-        self.ligaSegunda: LS.LigaSegunda = LS.LigaSegunda(participantes = listaSegundaDiv)
-        self.copaPrimera: CC.Copa = CC.Copa(participantes = listaPrimeraDiv)
-        self.copaSegunda: CC.Copa = CC.Copa(participantes = listaSegundaDiv)
+    def __init__(self, listaPrimeraDiv: list[Equipo], listaSegundaDiv: list[Equipo] = []) -> None:
+        self.ligaPrimera: LigaPrimera = LigaPrimera(participantes = listaPrimeraDiv)
+        self.ligaSegunda: LigaSegunda = LigaSegunda(participantes = listaSegundaDiv)
+        self.copaPrimera: Copa = Copa(participantes = listaPrimeraDiv)
+        self.copaSegunda: Copa = Copa(participantes = listaSegundaDiv)
         self._clasificadosInter: list = []
         self._tengoPlazaDeCampeon: bool = False
         self.establecerConfederacionALosEquipos()

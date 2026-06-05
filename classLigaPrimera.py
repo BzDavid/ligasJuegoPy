@@ -1,6 +1,6 @@
-import classLiga as CL
+from classLiga import Liga
 from logica import jugarIdaYVueltaYDarResultados
-class LigaPrimera(CL.Liga):
+class LigaPrimera(Liga):
     def __init__(self, participantes):
         super().__init__(participantes)
 
