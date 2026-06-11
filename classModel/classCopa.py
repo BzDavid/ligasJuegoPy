@@ -1,8 +1,8 @@
 import sys
 from random import shuffle
 from logica import ganadorEntre_ParaCopas
-from classLiga import Liga
-from classEquipo import Equipo
+from .classLiga import Liga
+from .classEquipo import Equipo
 class Copa:
     def __init__(self, participantes) -> None:
         self._participantes = participantes
@@ -11,7 +11,7 @@ class Copa:
         self._faseFinalGrupo2 = []
         shuffle(self._participantes)
         self.anadirParticipantesAGrupos()
-        self._campeon = None
+        self._campeon: Equipo = None
 
     # Funciones de retorno
 
@@ -92,8 +92,7 @@ class Copa:
             grupo.jugarFecha()
             grupo.ordenarPorPuntos()
             grupo.imprimirEstadoDeLiga()
-            print("")
-    
+            print("")   
 
     def jugarFaseDeGrupos(self, esConIdaYVuelta : bool) -> None:
         numeroDeJornada = 1
@@ -164,4 +163,12 @@ class Copa:
         with open(rutaArchivo, "a", encoding = "utf-8") as archivo:
             sys.stdout = archivo
             self.jugarCopa(temporada, esConIdaYVuelta)
+        sys.stdout = sys.__stdout__
+
+    def jugarCopaImprimiendo(self, temporada : int, esConIdaYVuelta : bool = False) -> None:
+        from JuegoLigasUI import TextRedirector
+        from JuegoLigasUI_Support import _w1
+        WidgetDeTexto = TextRedirector(_w1)
+        sys.stdout = WidgetDeTexto
+        self.jugarCopa(temporada, esConIdaYVuelta)
         sys.stdout = sys.__stdout__

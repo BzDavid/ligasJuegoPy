@@ -1,9 +1,18 @@
-import classConfederacion as CL
-import classEquipo as CE
-import classCopa as CC
+import classModel.classConfederacion as CL
+import classModel.classEquipo as CE
+import classModel.classCopa as CC
 import json
 import os
 import sys
+
+equiposCargados: list[list[dict]]
+nortePrimera: list[CE.Equipo]
+norteSegunda: list[CE.Equipo]
+estePrimera: list[CE.Equipo]
+surPrimera: list[CE.Equipo]
+oestePrimera: list[CE.Equipo]
+listaDeCampeones: list[CE.Equipo]
+temporada: int
 
 def descomprimirEquiposDeLista(listaParaDescomprimir: list[dict]) -> list[CE.Equipo]:
     listaDescomprimida: list[CE.Equipo] = []
@@ -13,20 +22,14 @@ def descomprimirEquiposDeLista(listaParaDescomprimir: list[dict]) -> list[CE.Equ
 
 # Para cargar datos del archivo de los equipos
 with open("equipos.json", "r") as listaEquipos:
-    equiposCargados: list[list[dict]] = json.load(listaEquipos)
-    nortePrimera: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[0])
-    norteSegunda: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[1])
-    estePrimera: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[2])
-    surPrimera: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[3])
-    oestePrimera: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[4])
-    listaDeCampeones: list[CE.Equipo] = descomprimirEquiposDeLista(equiposCargados[5])
-    # nortePrimera: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[0]]
-    # norteSegunda: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[1]]
-    # estePrimera: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[2]]
-    # surPrimera: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[3]]
-    # oestePrimera: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[4]]
-    # listaDeCampeones: list[CE.Equipo] = [CE.Equipo(**equipo) for equipo in equiposCargados[5]]
-    temporada: int = equiposCargados[6][0]
+    equiposCargados = json.load(listaEquipos)
+    nortePrimera = descomprimirEquiposDeLista(equiposCargados[0])
+    norteSegunda = descomprimirEquiposDeLista(equiposCargados[1])
+    estePrimera = descomprimirEquiposDeLista(equiposCargados[2])
+    surPrimera = descomprimirEquiposDeLista(equiposCargados[3])
+    oestePrimera = descomprimirEquiposDeLista(equiposCargados[4])
+    listaDeCampeones = descomprimirEquiposDeLista(equiposCargados[5])
+    temporada = equiposCargados[6][0]
     del equiposCargados
 
 confederacionNorte: CL.Confederacion = CL.Confederacion(
@@ -42,15 +45,21 @@ ligaOeste: CL.Confederacion = CL.Confederacion(listaPrimeraDiv = oestePrimera)
 
 copaInternacional: CC.Copa = CC.Copa(participantes = listaDeCampeones)
 
+del nortePrimera
+del norteSegunda
+del estePrimera
+del surPrimera
+del oestePrimera
+
 # El programa
 def guardar() -> None:
     global temporada
-    nortePrimeraDict: list = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaPrimera()]
-    norteSegundaDict: list = [equipo.dict() for equipo in confederacionNorte.participantesDeLigaSegunda()]
-    ligaEsteDict: list = [equipo.dict() for equipo in ligaEste.ligaPrimera.participantes()]
-    ligaSurDict: list = [equipo.dict() for equipo in ligaSur.ligaPrimera.participantes()]
-    ligaOesteDict: list = [equipo.dict() for equipo in ligaOeste.ligaPrimera.participantes()]
-    listaDeCampeonesDict: list = [equipo.dict() for equipo in clasificadosACopaInternacional()]
+    nortePrimeraDict: list = [equipo.toDict() for equipo in confederacionNorte.participantesDeLigaPrimera()]
+    norteSegundaDict: list = [equipo.toDict() for equipo in confederacionNorte.participantesDeLigaSegunda()]
+    ligaEsteDict: list = [equipo.toDict() for equipo in ligaEste.ligaPrimera.participantes()]
+    ligaSurDict: list = [equipo.toDict() for equipo in ligaSur.ligaPrimera.participantes()]
+    ligaOesteDict: list = [equipo.toDict() for equipo in ligaOeste.ligaPrimera.participantes()]
+    listaDeCampeonesDict: list = [equipo.toDict() for equipo in clasificadosACopaInternacional()]
     temporada += 1
 
     with open("equipos.json", "w") as listaEquipos:
@@ -76,10 +85,22 @@ def clasificadosACopaInternacional() -> list:
     campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
     return campeonesDeTodasLasConfederaciones 
 
+# def confederacionDelEquipo_(unEquipo: CE.Equipo) -> CL.Confederacion:
+#     confederaciones: list[CL.Confederacion] = [confederacionNorte, ligaEste, ligaOeste, ligaSur]
+#     for confederacion in confederaciones:
+#         if(confederacion.equipo_EstaEnEstaConfederacion(unEquipo.nombre())):
+#             return confederacion
+#     return None
+
+# def establecerConfederacionAlCampeonDeCopaInternacional() -> None:
+#     equipoCampeonDeCopaInternacional: CE.Equipo = copaInternacional.campeon()
+#     equipoCampeonDeCopaInternacional.establecerConfederacion(confederacionDelEquipo_(equipoCampeonDeCopaInternacional))
+
 def jugarGuardando() -> None:
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada, True)
+    # establecerConfederacionAlCampeonDeCopaInternacional()
     confederacionNorte.jugarTodasLasCompeticionesGuardando(temporada)
-    copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
+    # copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
     ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
@@ -87,11 +108,18 @@ def jugarGuardando() -> None:
     guardar()
 
 def jugarImprimiendo() -> None:
-    copaInternacional.jugarCopa(temporada, True)
+    copaInternacional.jugarCopaImprimiendo(temporada, True)
     confederacionNorte.jugarTodasLasCompeticionesImprimiendo(temporada)
     ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
     ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
+
+def segundaOpcion() -> None:
+    jugarGuardando()
+    os.startfile(r"ligas")
+
+def primeraOpcion() -> None:
+    jugarImprimiendo()
 
 def main() -> None:
     opcion = ""

@@ -1,5 +1,6 @@
 import random
 import sys
+
 def rango():
     return random.randint(1, 6)
 def generar():
@@ -63,7 +64,7 @@ def ganadorEntre_ParaCopas(equipoLocal , equipoVisitante):
     else:
         return equipoVisitante
 
-def jugarIdaYVueltaYDarResultados(equipoLocal, equipoVisitante) -> list:
+def jugarIdaYVueltaYDarResultados(equipoLocal, equipoVisitante):
     "El primero de la lista es el hipotético ganador"
     resultado = []
     resultado.append(ganadorEntre_IdaYVuelta(equipoLocal, equipoVisitante))

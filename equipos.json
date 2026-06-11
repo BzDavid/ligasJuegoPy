@@ -1,18 +1,6 @@
 [
     [
         {
-            "nombre": "Pardenos"
-        },
-        {
-            "nombre": "Victoria"
-        },
-        {
-            "nombre": "Boravik"
-        },
-        {
-            "nombre": "Ferrosur"
-        },
-        {
             "nombre": "Tirana"
         },
         {
@@ -22,12 +10,24 @@
             "nombre": "Novigrad"
         },
         {
+            "nombre": "Boravik"
+        },
+        {
+            "nombre": "Lormont"
+        },
+        {
             "nombre": "Calverna"
+        },
+        {
+            "nombre": "Dravus"
+        },
+        {
+            "nombre": "Rodanor"
         }
     ],
     [
         {
-            "nombre": "Lormont"
+            "nombre": "Pardenos"
         },
         {
             "nombre": "Veltsen"
@@ -36,27 +36,27 @@
             "nombre": "Monteluz"
         },
         {
-            "nombre": "Valdonza"
+            "nombre": "Rogar"
         },
         {
             "nombre": "Streinbr"
         },
         {
-            "nombre": "Rodanor"
+            "nombre": "Victoria"
         },
         {
-            "nombre": "Rogar"
+            "nombre": "Ferrosur"
         },
         {
-            "nombre": "Dravus"
+            "nombre": "Valdonza"
         }
     ],
     [
         {
-            "nombre": "VickVolt"
+            "nombre": "Zelta"
         },
         {
-            "nombre": "Surplus"
+            "nombre": "Krouser"
         },
         {
             "nombre": "Reyes"
@@ -65,13 +65,13 @@
             "nombre": "Verdes"
         },
         {
-            "nombre": "Zelta"
+            "nombre": "VickVolt"
         },
         {
             "nombre": "Amplios"
         },
         {
-            "nombre": "Krouser"
+            "nombre": "Surplus"
         },
         {
             "nombre": "Aurinegros"
@@ -79,10 +79,13 @@
     ],
     [
         {
+            "nombre": "Capitales"
+        },
+        {
             "nombre": "Virision"
         },
         {
-            "nombre": "Capitales"
+            "nombre": "Rodasur"
         },
         {
             "nombre": "Acetitas"
@@ -91,24 +94,77 @@
             "nombre": "Center"
         },
         {
-            "nombre": "Rojos"
+            "nombre": "Aquilani"
         },
         {
             "nombre": "Invictos"
         },
         {
-            "nombre": "Aquilani"
-        },
-        {
-            "nombre": "Rodasur"
+            "nombre": "Rojos"
         }
     ],
     [
         {
+            "nombre": "Azules"
+        },
+        {
+            "nombre": "Yedar"
+        },
+        {
             "nombre": "Fuertes"
         },
         {
+            "nombre": "Blanquinegros"
+        },
+        {
+            "nombre": "Lanos"
+        },
+        {
             "nombre": "Yield"
+        },
+        {
+            "nombre": "Rapaces"
+        },
+        {
+            "nombre": "Realistas"
+        }
+    ],
+    [
+        {
+            "nombre": "Tirana"
+        },
+        {
+            "nombre": "Cernovia"
+        },
+        {
+            "nombre": "Lormont"
+        },
+        {
+            "nombre": "Rodanor"
+        },
+        {
+            "nombre": "Zelta"
+        },
+        {
+            "nombre": "Krouser"
+        },
+        {
+            "nombre": "Reyes"
+        },
+        {
+            "nombre": "Amplios"
+        },
+        {
+            "nombre": "Capitales"
+        },
+        {
+            "nombre": "Virision"
+        },
+        {
+            "nombre": "Rodasur"
+        },
+        {
+            "nombre": "Center"
         },
         {
             "nombre": "Azules"
@@ -117,57 +173,13 @@
             "nombre": "Yedar"
         },
         {
-            "nombre": "Realistas"
-        },
-        {
-            "nombre": "Blanquinegros"
-        },
-        {
-            "nombre": "Rapaces"
-        },
-        {
-            "nombre": "Lanos"
-        }
-    ],
-    [
-        {
-            "nombre": "Calverna"
-        },
-        {
-            "nombre": "Pardenos"
-        },
-        {
-            "nombre": "Boravik"
-        },
-        {
-            "nombre": "VickVolt"
-        },
-        {
-            "nombre": "Surplus"
-        },
-        {
-            "nombre": "Krouser"
-        },
-        {
-            "nombre": "Virision"
-        },
-        {
-            "nombre": "Capitales"
-        },
-        {
-            "nombre": "Acetitas"
-        },
-        {
             "nombre": "Fuertes"
         },
         {
-            "nombre": "Yield"
-        },
-        {
             "nombre": "Blanquinegros"
         }
     ],
     [
-        1973
+        1986
     ]
 ]

@@ -1,7 +1,8 @@
-from classLiga import Liga
+from .classEquipo import Equipo
+from .classLiga import Liga
 from logica import jugarIdaYVueltaYDarResultados
 class LigaPrimera(Liga):
-    def __init__(self, participantes):
+    def __init__(self, participantes) -> None:
         super().__init__(participantes)
 
     def jugarLiga(self, temporada : int) -> None:
@@ -15,13 +16,13 @@ class LigaPrimera(Liga):
         print("¡La temporada ha terminado!")
         print("")
 
-    def queEquiposDescienden(self) -> list:
+    def queEquiposDescienden(self) -> list[Equipo]:
         return [self._participantes[int((self.participantes().size() - 2))].nombre(), self._participantes[int((self.participantes().size() - 1))].nombre()]
 
-    def jugarPromocion(self, otraLiga) -> None:
+    def jugarPromocion(self, otraLiga) -> list[Equipo]:
         print("¡La promoción ha comenzado!")
         return jugarIdaYVueltaYDarResultados(self._participantes[len(self._participantes) - 2], otraLiga.participantes()[1])
     
-    def eliminarUltimosDos(self):
+    def eliminarUltimosDos(self) -> None:
         self._participantes.pop(int(len(self._participantes) - 1))
         self._participantes.pop(int(len(self._participantes) - 1))

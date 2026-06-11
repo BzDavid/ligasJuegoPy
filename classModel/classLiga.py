@@ -1,10 +1,10 @@
 import sys
 import logica
 from random import shuffle
-from classEquipo import Equipo
+from .classEquipo import Equipo
 
 class Liga:
-    def __init__(self, participantes: list[Equipo], nombreDeLiga: str = "Liga"):
+    def __init__(self, participantes: list[Equipo], nombreDeLiga: str = "Liga") -> None:
         self._nombreDeLiga: str = nombreDeLiga
         self._participantes: list[Equipo] = participantes
         self._primerSegmentoDeEquipos: list[Equipo] = []
@@ -12,87 +12,78 @@ class Liga:
         self.actualizarEquiposParticipantes()
         self._ultimoCampeon: Equipo = None
 
-    def primerSegmentoPorNombre(self): 
-        return list(map(lambda equipo: equipo.nombre(), self._primerSegmentoDeEquipos))
+    def listaDeEquipos_PorNombre(self, listaEquipos: list[Equipo]) -> list[str]:
+        listaFinal: list[str] = []
+        for equipo in listaEquipos:
+            listaFinal.append(equipo.nombre())
+        return listaFinal
 
-    def segundoSegmentoPorNombre(self):
-        return list(map(lambda equipo: equipo.nombre(), self._segundoSegmentoDeEquipos))
+    def primerSegmentoPorNombre(self) -> list[str]:
+        return self.listaDeEquipos_PorNombre(self._primerSegmentoDeEquipos)
 
-    def participantesPorNombre(self):
-        return list(map(lambda equipo: equipo.nombre(), self._participantes))
+    def segundoSegmentoPorNombre(self) -> list[str]:
+        return self.listaDeEquipos_PorNombre(self._segundoSegmentoDeEquipos)
 
-    def participantesPorPuntos(self): 
+    def participantesPorNombre(self) -> list[str]:
+        return  self.listaDeEquipos_PorNombre(self._participantes)
+
+    def participantesPorPuntos(self) -> list[int]: 
         return list(map(lambda equipo: equipo.puntos(), self._participantes))
 
-    def primerSegmentoDeEquipos(self):
+    def primerSegmentoDeEquipos(self) -> list[Equipo]:
         return self._primerSegmentoDeEquipos
 
     def participantes(self) -> list[Equipo]:
         return self._participantes
     
-    def topTres(self):
+    def topCuatro(self) -> list[Equipo]:
+        return self.topTres() + [self.cuarto()]
+    
+    def topTres(self) -> list[Equipo]:
         return self.topDos() + [self.tercero()]
     
-    def topDos(self):
+    def topDos(self) -> list[Equipo]:
         return [self.primero(), self.segundo()]
     
-    def primero(self):
+    def primero(self) -> Equipo:
         if(len(self._participantes) < 1): 
             print("No hay tantos equipos")
             return None
         return self._participantes[0]
 
-    def segundo(self):
+    def segundo(self) -> Equipo:
         if(len(self._participantes) < 2): 
             print("No hay tantos equipos")
             return None
         return self._participantes[1]
 
-    def tercero(self):
+    def tercero(self) -> Equipo:
         if(len(self._participantes) < 3): 
             print("No hay tantos equipos")
             return None
         return self._participantes[2]
     
-    def cuarto(self):
+    def cuarto(self) -> Equipo:
         if(len(self._participantes) < 4): 
             print("No hay tantos equipos")
             return None
         return self._participantes[3]
     
-    def ultimo(self):
+    def ultimo(self) -> Equipo:
         if(len(self._participantes) < 1): 
             print("No hay tantos equipos")
             return None
         return self._participantes[int(len(self._participantes) - 1)]
     
-    def ultimoCampeon(self):
+    def ultimoCampeon(self) -> Equipo:
         return self._ultimoCampeon
 
-    def crearDosEquiposYAnadirlos(self):
-        self.anadirListaDeEquipos(
-            [
-                Equipo(str(input("Nombre del primer equipo?: "))),
-                Equipo(str(input("Nombre del segundo equipo?: ")))
-            ]
-        )
-
-    def anadirEquipo(self, unEquipo):
+    def anadirEquipo(self, unEquipo) -> None:
         self._participantes.append(unEquipo)
 
     def anadirListaDeEquipos(self, unaListaDeEquipos : list) -> None:
         self._participantes.extend(unaListaDeEquipos)
         self.actualizarEquiposParticipantes()
-
-    def eliminarYAnadirLista(self, unaListaDeEquipos : list) -> None:
-        self._participantes.clear()
-        self.anadirListaDeEquipos(unaListaDeEquipos)
-
-    def eliminarParticipantePorNombre(self, nombreDelParticipante : str) -> None:
-        for equipo in self._participantes:
-            if equipo.nombre() == nombreDelParticipante:
-                self._participantes.remove(equipo)
-                break
 
     def ordenarPorPuntos(self) -> None:
         self._participantes.sort(key = lambda unEquipo: (unEquipo.puntos(), unEquipo.diferenciaDeGoles()), reverse = True)
@@ -136,12 +127,20 @@ class Liga:
             equipo.reiniciarEstadisticas()
 
     def jugarFecha(self) -> None:
-        rangoDeEquipos = list(range(0, int(len(self._participantes) / 2)))
+        rangoDeEquipos = self.generarListaDeLaMitadDeLaCantidadDeEquipos()
         for i in rangoDeEquipos:
             logica.jugarPartido(
                 self._primerSegmentoDeEquipos[i],
                 self._segundoSegmentoDeEquipos[i])
         self.ordenarSegmentosParaSiguienteFecha()
+    
+    def generarListaDeLaMitadDeLaCantidadDeEquipos(self) -> list[int]:
+        flotanteDeLaMitadDeListaDeParticipantes: float = len(self._participantes) / 2 # La mitad del número de elementos de la lista de participantes
+        enteroDeLaMitadDeListaDeParticipantes: int = int(flotanteDeLaMitadDeListaDeParticipantes) # Lo paso a entero
+        rango: range = range(0, enteroDeLaMitadDeListaDeParticipantes) # Creo el rango
+        listaDeNumeros: list[int] = list(rango) # Convierto el rango a lista
+        return listaDeNumeros
+        #return list(range(0, int(len(self._participantes) / 2)))
 
     def ordenarSegmentosParaSiguienteFecha(self) -> None:
         self._segundoSegmentoDeEquipos.append(self._primerSegmentoDeEquipos[int(len(self._primerSegmentoDeEquipos) - 1)])
@@ -161,14 +160,20 @@ class Liga:
             int(len(self._participantes) - (len(self._participantes) / 2)) :
             int(len(self._participantes))])
 
-    def dict(self):
+    def toDict(self) -> dict:
         return {
-            "participantes" : [equipo.dict() for equipo in self._participantes],
+            "participantes" : [equipo.toDict() for equipo in self._participantes],
             "nombreDeLiga" : self._nombreDeLiga
         }
         
-    def jugarLigaGuardandoResultados(self, rutaArchivo : str, temporada : int):
+    def jugarLigaGuardandoResultados(self, rutaArchivo : str, temporada : int) -> None:
         with open(rutaArchivo, "a", encoding = "utf-8") as archivo:
             sys.stdout = archivo
             self.jugarLiga(temporada)
         sys.stdout = sys.__stdout__
+
+    def equipo_EstaEnEstaLiga(self, nombreDelEquipo: str):
+        for equipo in self._participantes:
+            if(nombreDelEquipo == equipo.nombre()):
+                return True
+        return False

@@ -1,24 +1,28 @@
 from logica import generar
-#from classConfederacion import Confederacion
+#from .classConfederacion import Confederacion
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .classConfederacion import Confederacion
+
 class Equipo:
     def __init__(self, nombre: str) -> None:
-        self._nombre = nombre
-        self._puntos = 0
-        self._golesAFavor = 0
-        self._golesEnContra = 0
-        self._golesEnPartido = 0
-        self._golesGlobales = 0
-        self._partidosGanados = 0
-        self._partidosPerdidos = 0
-        self._partidosEmpatados = 0
-        self._partidosGlobalesJugados = 0
-        self._confederacion = None
-        #self._confederacion: Confederacion = None
+        self._nombre: str = nombre
+        self._puntos: int = 0
+        self._golesAFavor: int = 0
+        self._golesEnContra: int = 0
+        self._golesEnPartido: int = 0
+        self._golesGlobales: int = 0
+        self._partidosGanados: int = 0
+        self._partidosPerdidos: int = 0
+        self._partidosEmpatados: int = 0
+        self._partidosGlobalesJugados: int = 0
+        # self._confederacion: "Confederacion" = None
     
     def __str__(self):
         return self._nombre
     
-    def dict(self):
+    def toDict(self):
         return {
             "nombre" : self._nombre 
         }
@@ -56,10 +60,10 @@ class Equipo:
     def nombre(self) -> str:
         return self._nombre
     
-    def confederacion(self):
-        return self._confederacion 
+    # def confederacion(self) -> "Confederacion":
+    #     return self._confederacion 
     
-    def statGoles(self) -> list:
+    def statGoles(self) -> list[int]:
         return [self._golesAFavor, self._golesEnContra, self.diferenciaDeGoles()]
     
     def stats(self) -> list: 
@@ -68,7 +72,7 @@ class Equipo:
     def fullStats(self) -> list:
         return [self._nombre, self.partidosJugados(), self._partidosGanados, self._partidosEmpatados, self._partidosPerdidos, self._golesAFavor, self._golesEnContra, self.diferenciaDeGoles(), self._puntos] 
 
-    def dicDeStats(self) -> dict:
+    def dicDeStats(self):
         return {
             "Equipo" : self._nombre, 
             "PJ" : self.partidosJugados(),
@@ -81,18 +85,18 @@ class Equipo:
             "Pts" : self._puntos 
             }
         
-    def establecerConfederacion(self, unaConfederacion) -> None:
-        self._confederacion = unaConfederacion
+    # def establecerConfederacion(self, unaConfederacion: "Confederacion") -> None:
+    #     self._confederacion = unaConfederacion
 
     def jugarPartidoContra_(self, unRival) -> None:
         self._golesEnPartido = generar()
         self._golesAFavor += self._golesEnPartido
         unRival.sumarGolesEnContra(self._golesEnPartido)
 
-    def jugarPartidoEspecial(self):
+    def jugarPartidoEspecial(self) -> None:
         self._golesEnPartido = generar()
         
-    def jugarProrroga(self):
+    def jugarProrroga(self) -> None:
         self._golesEnPartido = max(generar() - 2, 0)
 
     def sumarGolesEnContra(self, goles: int) -> None:
