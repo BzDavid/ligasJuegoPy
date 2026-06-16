@@ -172,8 +172,14 @@ class Liga:
             self.jugarLiga(temporada)
         sys.stdout = sys.__stdout__
 
-    def equipo_EstaEnEstaLiga(self, nombreDelEquipo: str):
+    def equipo_EstaEnEstaLiga(self, nombreDelEquipo: str) -> bool:
         for equipo in self._participantes:
             if(nombreDelEquipo == equipo.nombre()):
                 return True
         return False
+
+    def buscarEquipo_PorNombre(self, nombreDelEquipo: str) -> Equipo:
+        for equipo in self._participantes:
+            if(nombreDelEquipo == equipo.nombre()):
+                return equipo
+        return None

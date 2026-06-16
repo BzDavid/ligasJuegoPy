@@ -85,12 +85,15 @@ def clasificadosACopaInternacional() -> list:
     campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
     return campeonesDeTodasLasConfederaciones 
 
-# def confederacionDelEquipo_(unEquipo: CE.Equipo) -> CL.Confederacion:
-#     confederaciones: list[CL.Confederacion] = [confederacionNorte, ligaEste, ligaOeste, ligaSur]
-#     for confederacion in confederaciones:
-#         if(confederacion.equipo_EstaEnEstaConfederacion(unEquipo.nombre())):
-#             return confederacion
-#     return None
+def confederacionDelEquipo_(unEquipo: CE.Equipo) -> CL.Confederacion:
+    confederaciones: list[CL.Confederacion] = [confederacionNorte, ligaEste, ligaOeste, ligaSur]
+    for confederacion in confederaciones:
+        if(confederacion.equipo_EstaEnEstaConfederacion(unEquipo.nombre())):
+            return confederacion
+    return None
+
+def establecerCampeonInternacionalASuConfederacion(unEquipo: CE.Equipo):
+    confederacionDelEquipo_(unEquipo).agregarEquipoCampeonDeCopaInternacional(unEquipo.nombre())
 
 # def establecerConfederacionAlCampeonDeCopaInternacional() -> None:
 #     equipoCampeonDeCopaInternacional: CE.Equipo = copaInternacional.campeon()
@@ -98,6 +101,7 @@ def clasificadosACopaInternacional() -> list:
 
 def jugarGuardando() -> None:
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada, True)
+    establecerCampeonInternacionalASuConfederacion(copaInternacional.campeon())
     # establecerConfederacionAlCampeonDeCopaInternacional()
     confederacionNorte.jugarTodasLasCompeticionesGuardando(temporada)
     # copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()

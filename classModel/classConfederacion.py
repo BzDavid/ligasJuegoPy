@@ -12,7 +12,7 @@ class Confederacion:
         self.copaPrimera: Copa = Copa(participantes = listaPrimeraDiv)
         self.copaSegunda: Copa = Copa(participantes = listaSegundaDiv)
         self._clasificadosInter: list[Equipo] = []
-        # self._tengoPlazaDeCampeon: bool = False
+        self._equipoCampeonDeCopaInternacional: Equipo = None
         # self.establecerConfederacionALosEquipos()
 
     def establecerConfederacionALosEquipos(self) -> None:
@@ -128,7 +128,15 @@ class Confederacion:
     #         clasificados.append(self.copaPrimera.campeon())
     #     return clasificados
     
-    def clasificadosACopaInternacionalHastaAhora(self):
+    # def clasificadosACopaInternacionalHastaAhora(self):
+    #     clasificados: list[Equipo] = self.ligaPrimera.topTres()
+    #     if (self.copaPrimera.campeon() in clasificados):
+    #         clasificados.append(self.ligaPrimera.cuarto())
+    #     else: 
+    #         clasificados.append(self.copaPrimera.campeon())
+    #     return clasificados
+
+    def clasificadosACopaInternacionalHastaAhoraSinPlaza(self) -> list[Equipo]:
         clasificados: list[Equipo] = self.ligaPrimera.topTres()
         if (self.copaPrimera.campeon() in clasificados):
             clasificados.append(self.ligaPrimera.cuarto())
@@ -136,8 +144,20 @@ class Confederacion:
             clasificados.append(self.copaPrimera.campeon())
         return clasificados
     
-    def agregarUnaPlazaACopaInternacional(self) -> None:
-        self._tengoPlazaDeCampeon = True
+    def clasificadosACopaInternacionalHastaAhora(self) -> list[Equipo]:
+        if(self._equipoCampeonDeCopaInternacional == None):
+            return self.clasificadosACopaInternacionalHastaAhoraSinPlaza()
+        return self.clasificadosACopaInternacionalHastaAhoraSinPlaza() #TODO
+    
+    def agregarEquipoCampeonDeCopaInternacional(self, nombreDelEquipo: str) -> None:
+        self._equipoCampeonDeCopaInternacional = self.buscarEquipo_PorNombre(nombreDelEquipo)
 
-    def equipo_EstaEnEstaConfederacion(self, nombreEquipo: str):
+    def equipo_EstaEnEstaConfederacion(self, nombreEquipo: str) -> bool:
         return self.ligaPrimera.equipo_EstaEnEstaLiga(nombreEquipo) or self.ligaSegunda.equipo_EstaEnEstaLiga(nombreEquipo)
+    
+    def buscarEquipo_PorNombre(self, nombreDelEquipo: str) -> Equipo:
+        if(self.ligaPrimera.equipo_EstaEnEstaLiga(nombreDelEquipo)):
+            return self.ligaPrimera.buscarEquipo_PorNombre(nombreDelEquipo)
+        if(self.ligaSegunda.equipo_EstaEnEstaLiga(nombreDelEquipo)):
+            return self.ligaSegunda.buscarEquipo_PorNombre(nombreDelEquipo)
+        return None
