@@ -165,10 +165,12 @@ class Copa:
             self.jugarCopa(temporada, esConIdaYVuelta)
         sys.stdout = sys.__stdout__
 
-    def jugarCopaImprimiendo(self, temporada : int, esConIdaYVuelta : bool = False) -> None:
-        from JuegoLigasUI import TextRedirector
-        from JuegoLigasUI_Support import _w1
-        WidgetDeTexto = TextRedirector(_w1)
-        sys.stdout = WidgetDeTexto
+    def jugarCopaImprimiendo(self, temporada : int, isRunnedInConsole: bool, esConIdaYVuelta : bool = False) -> None:
+        if (not isRunnedInConsole):
+            from mainUI import TextRedirector
+            from UISupportModule import _w1
+            WidgetDeTexto = TextRedirector(_w1)
+            sys.stdout = WidgetDeTexto
         self.jugarCopa(temporada, esConIdaYVuelta)
-        sys.stdout = sys.__stdout__
+        if (not isRunnedInConsole):
+            sys.stdout = sys.__stdout__

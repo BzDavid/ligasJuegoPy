@@ -4,7 +4,10 @@ import classModel.classCopa as CC
 import json
 import os
 import sys
+from pathlib import Path
+from random import shuffle
 
+isRunningInConsole: bool = False
 equiposCargados: list[list[dict]]
 nortePrimera: list[CE.Equipo]
 norteSegunda: list[CE.Equipo]
@@ -20,8 +23,9 @@ def descomprimirEquiposDeLista(listaParaDescomprimir: list[dict]) -> list[CE.Equ
         listaDescomprimida.append(CE.Equipo(**equipo))
     return listaDescomprimida
 
+rutaDelJson: Path = Path(__file__).parent / "equipos.json"
 # Para cargar datos del archivo de los equipos
-with open("equipos.json", "r") as listaEquipos:
+with open(rutaDelJson, "r") as listaEquipos:
     equiposCargados = json.load(listaEquipos)
     nortePrimera = descomprimirEquiposDeLista(equiposCargados[0])
     norteSegunda = descomprimirEquiposDeLista(equiposCargados[1])
@@ -45,6 +49,8 @@ ligaOeste: CL.Confederacion = CL.Confederacion(listaPrimeraDiv = oestePrimera)
 
 copaInternacional: CC.Copa = CC.Copa(participantes = listaDeCampeones)
 
+confederaciones: list[CL.Confederacion] = [confederacionNorte, ligaEste, ligaOeste, ligaSur]
+
 del nortePrimera
 del norteSegunda
 del estePrimera
@@ -62,7 +68,7 @@ def guardar() -> None:
     listaDeCampeonesDict: list = [equipo.toDict() for equipo in clasificadosACopaInternacional()]
     temporada += 1
 
-    with open("equipos.json", "w") as listaEquipos:
+    with open(rutaDelJson, "w") as listaEquipos:
         json.dump([nortePrimeraDict, norteSegundaDict, ligaEsteDict, ligaSurDict, ligaOesteDict, listaDeCampeonesDict, [temporada]], listaEquipos, indent = 4)
 
 def registrarCampeones() -> None:
@@ -76,28 +82,41 @@ def registrarCampeones() -> None:
         print(f"⭐ - {copaInternacional.campeon().nombre()}")
         print("")
     sys.stdout = sys.__stdout__
-
-# def campeonesSinEquiposDePrimera() -> list:
-#     campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
-#     return campeonesDeTodasLasConfederaciones
     
-def clasificadosACopaInternacional() -> list:
-    campeonesDeTodasLasConfederaciones = confederacionNorte.getClasificadosInternacionales() + ligaEste.getClasificadosInternacionales() + ligaSur.getClasificadosInternacionales() + ligaOeste.getClasificadosInternacionales()
-    return campeonesDeTodasLasConfederaciones 
+def clasificadosACopaInternacional() -> list[CE.Equipo]:
+    iteracion: int = 0
+    listaParaDejarAfueraAUnEquipoDeUnaConfederacion: list[bool] = [True, False, False]
+    shuffle(listaParaDejarAfueraAUnEquipoDeUnaConfederacion)
+    clasificadosDeConfederacionesNoCampeonas: list[CE.Equipo] = []
+    for confederacion in confederacionesNoCampeonas():
+        clasificadosDeConfederacionesNoCampeonas = clasificadosDeConfederacionesNoCampeonas + confederacion.getClasificadosInternacionales(listaParaDejarAfueraAUnEquipoDeUnaConfederacion[iteracion])
+        iteracion += 1
+    clasificadosDeTodasLasConfederaciones = confederacionCampeona()[0].getClasificadosInternacionales() + clasificadosDeConfederacionesNoCampeonas
+    return clasificadosDeTodasLasConfederaciones 
 
 def confederacionDelEquipo_(unEquipo: CE.Equipo) -> CL.Confederacion:
-    confederaciones: list[CL.Confederacion] = [confederacionNorte, ligaEste, ligaOeste, ligaSur]
-    for confederacion in confederaciones:
+    confederacionesLocal: list[CL.Confederacion] = confederaciones.copy()
+    for confederacion in confederacionesLocal:
         if(confederacion.equipo_EstaEnEstaConfederacion(unEquipo.nombre())):
             return confederacion
     return None
 
-def establecerCampeonInternacionalASuConfederacion(unEquipo: CE.Equipo):
+def establecerCampeonInternacionalASuConfederacion(unEquipo: CE.Equipo) -> None:
     confederacionDelEquipo_(unEquipo).agregarEquipoCampeonDeCopaInternacional(unEquipo.nombre())
 
-# def establecerConfederacionAlCampeonDeCopaInternacional() -> None:
-#     equipoCampeonDeCopaInternacional: CE.Equipo = copaInternacional.campeon()
-#     equipoCampeonDeCopaInternacional.establecerConfederacion(confederacionDelEquipo_(equipoCampeonDeCopaInternacional))
+def confederacionesNoCampeonas() -> list[CL.Confederacion]:
+    confederacionesLocal: list[CL.Confederacion] = confederaciones.copy()
+    for confederacion in confederacionesLocal:
+        if(confederacion._equipoCampeonDeCopaInternacional != None):
+            confederacionesLocal.remove(confederacion)
+    return confederacionesLocal
+
+def confederacionCampeona() -> list[CL.Confederacion]:
+    confederacionesLocal: list[CL.Confederacion] = confederaciones.copy()
+    for confederacion in confederacionesLocal:
+        if(confederacion._equipoCampeonDeCopaInternacional != None):
+            return [confederacion]
+    return None
 
 def jugarGuardando() -> None:
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada, True)
@@ -105,18 +124,18 @@ def jugarGuardando() -> None:
     # establecerConfederacionAlCampeonDeCopaInternacional()
     confederacionNorte.jugarTodasLasCompeticionesGuardando(temporada)
     # copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
-    ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
-    ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
-    ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
+    ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)
+    ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)
+    ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)
     registrarCampeones()
     guardar()
 
 def jugarImprimiendo() -> None:
-    copaInternacional.jugarCopaImprimiendo(temporada, True)
-    confederacionNorte.jugarTodasLasCompeticionesImprimiendo(temporada)
-    ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada)
-    ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada)
-    ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada)
+    copaInternacional.jugarCopaImprimiendo(temporada, isRunningInConsole, True)
+    confederacionNorte.jugarTodasLasCompeticionesImprimiendo(temporada, isRunningInConsole)
+    ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)
+    ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)
+    ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)
 
 def segundaOpcion() -> None:
     jugarGuardando()
@@ -148,4 +167,5 @@ def main() -> None:
             print("")
 
 if __name__ == "__main__":
+    isRunningInConsole = True
     main()

@@ -10,8 +10,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import *
 
-import JuegoLigasUI
-import main as program
+import mainUI
+import mainConsole as program
 
 _debug = False # False to eliminate debug printing from callback functions.
 mainWidgetText = None
@@ -25,7 +25,7 @@ def main(*args):
     # Creates a toplevel widget.
     global _top1, _w1
     _top1 = root
-    _w1 = JuegoLigasUI.PrimerPantalla(_top1)
+    _w1 = mainUI.PrimerPantalla(_top1)
     root.mainloop()
 
 def primerOpcion(*args):
@@ -40,4 +40,4 @@ def segundaOpcion(*args):
     #     sys.stdout.flush()
 
 if __name__ == '__main__':
-    JuegoLigasUI.start_up()
+    mainUI.start_up()

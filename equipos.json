@@ -1,31 +1,43 @@
 [
     [
         {
-            "nombre": "Tirana"
+            "nombre": "Streinbr"
         },
         {
-            "nombre": "Cernovia"
+            "nombre": "Rogar"
         },
         {
-            "nombre": "Novigrad"
+            "nombre": "Rodanor"
         },
         {
             "nombre": "Boravik"
         },
         {
-            "nombre": "Lormont"
+            "nombre": "Victoria"
         },
         {
-            "nombre": "Calverna"
+            "nombre": "Valdonza"
+        },
+        {
+            "nombre": "Monteluz"
+        },
+        {
+            "nombre": "Cernovia"
+        }
+    ],
+    [
+        {
+            "nombre": "Novigrad"
         },
         {
             "nombre": "Dravus"
         },
         {
-            "nombre": "Rodanor"
-        }
-    ],
-    [
+            "nombre": "Ferrosur"
+        },
+        {
+            "nombre": "Calverna"
+        },
         {
             "nombre": "Pardenos"
         },
@@ -33,39 +45,105 @@
             "nombre": "Veltsen"
         },
         {
-            "nombre": "Monteluz"
+            "nombre": "Lormont"
         },
         {
-            "nombre": "Rogar"
-        },
-        {
-            "nombre": "Streinbr"
-        },
-        {
-            "nombre": "Victoria"
-        },
-        {
-            "nombre": "Ferrosur"
-        },
-        {
-            "nombre": "Valdonza"
+            "nombre": "Tirana"
         }
     ],
     [
         {
+            "nombre": "Amplios"
+        },
+        {
+            "nombre": "Surplus"
+        },
+        {
             "nombre": "Zelta"
-        },
-        {
-            "nombre": "Krouser"
-        },
-        {
-            "nombre": "Reyes"
         },
         {
             "nombre": "Verdes"
         },
         {
+            "nombre": "Reyes"
+        },
+        {
+            "nombre": "Krouser"
+        },
+        {
+            "nombre": "Aurinegros"
+        },
+        {
             "nombre": "VickVolt"
+        }
+    ],
+    [
+        {
+            "nombre": "Center"
+        },
+        {
+            "nombre": "Invictos"
+        },
+        {
+            "nombre": "Rodasur"
+        },
+        {
+            "nombre": "Virision"
+        },
+        {
+            "nombre": "Acetitas"
+        },
+        {
+            "nombre": "Capitales"
+        },
+        {
+            "nombre": "Rojos"
+        },
+        {
+            "nombre": "Aquilani"
+        }
+    ],
+    [
+        {
+            "nombre": "Blanquinegros"
+        },
+        {
+            "nombre": "Fuertes"
+        },
+        {
+            "nombre": "Lanos"
+        },
+        {
+            "nombre": "Rapaces"
+        },
+        {
+            "nombre": "Yedar"
+        },
+        {
+            "nombre": "Yield"
+        },
+        {
+            "nombre": "Realistas"
+        },
+        {
+            "nombre": "Azules"
+        }
+    ],
+    [
+        {
+            "nombre": "Rodanor"
+        },
+        {
+            "nombre": "Cernovia"
+        },
+        {
+            "nombre": "Boravik"
+        },
+        {
+            "nombre": "Victoria"
+        },
+        {
+            "nombre": "Valdonza"
         },
         {
             "nombre": "Amplios"
@@ -74,112 +152,34 @@
             "nombre": "Surplus"
         },
         {
-            "nombre": "Aurinegros"
-        }
-    ],
-    [
-        {
-            "nombre": "Capitales"
+            "nombre": "Zelta"
         },
         {
-            "nombre": "Virision"
-        },
-        {
-            "nombre": "Rodasur"
-        },
-        {
-            "nombre": "Acetitas"
-        },
-        {
-            "nombre": "Center"
-        },
-        {
-            "nombre": "Aquilani"
-        },
-        {
-            "nombre": "Invictos"
-        },
-        {
-            "nombre": "Rojos"
-        }
-    ],
-    [
-        {
-            "nombre": "Azules"
-        },
-        {
-            "nombre": "Yedar"
-        },
-        {
-            "nombre": "Fuertes"
+            "nombre": "Verdes"
         },
         {
             "nombre": "Blanquinegros"
         },
         {
-            "nombre": "Lanos"
-        },
-        {
-            "nombre": "Yield"
+            "nombre": "Fuertes"
         },
         {
             "nombre": "Rapaces"
         },
         {
-            "nombre": "Realistas"
-        }
-    ],
-    [
-        {
-            "nombre": "Tirana"
+            "nombre": "Center"
         },
         {
-            "nombre": "Cernovia"
-        },
-        {
-            "nombre": "Lormont"
-        },
-        {
-            "nombre": "Rodanor"
-        },
-        {
-            "nombre": "Zelta"
-        },
-        {
-            "nombre": "Krouser"
-        },
-        {
-            "nombre": "Reyes"
-        },
-        {
-            "nombre": "Amplios"
-        },
-        {
-            "nombre": "Capitales"
-        },
-        {
-            "nombre": "Virision"
+            "nombre": "Invictos"
         },
         {
             "nombre": "Rodasur"
         },
         {
-            "nombre": "Center"
-        },
-        {
-            "nombre": "Azules"
-        },
-        {
-            "nombre": "Yedar"
-        },
-        {
-            "nombre": "Fuertes"
-        },
-        {
-            "nombre": "Blanquinegros"
+            "nombre": "Virision"
         }
     ],
     [
-        1986
+        2002
     ]
 ]

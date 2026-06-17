@@ -13,7 +13,7 @@ import os.path
 
 _location = os.path.dirname(__file__)
 
-import JuegoLigasUI_Support
+import UISupportModule
 
 
 _bgcolor = '#d9d9d9'
@@ -28,7 +28,7 @@ _style_code_ran = 0
 def _style_code():
     global _style_code_ran
     if _style_code_ran: return        
-    try: JuegoLigasUI_Support.root.tk.call('source',
+    try: UISupportModule.root.tk.call('source',
                 os.path.join(_location, 'themes', 'classic.tcl'))
     except: pass
     style = ttk.Style()
@@ -77,7 +77,7 @@ class PrimerPantalla:
         self.BotonSoloJugar.configure(activebackground="#d9d9d9")
         self.BotonSoloJugar.configure(activeforeground="#ffffff")
         self.BotonSoloJugar.configure(background="#d9d9d9")
-        self.BotonSoloJugar.configure(command=lambda:JuegoLigasUI_Support.primerOpcion())
+        self.BotonSoloJugar.configure(command=lambda:UISupportModule.primerOpcion())
         self.BotonSoloJugar.configure(compound='left')
         self.BotonSoloJugar.configure(disabledforeground="#a3a3a3")
         self.BotonSoloJugar.configure(foreground="black")
@@ -91,7 +91,7 @@ class PrimerPantalla:
         self.BotonJugarYGuardar.configure(activebackground="#d9d9d9")
         self.BotonJugarYGuardar.configure(activeforeground="#ffffff")
         self.BotonJugarYGuardar.configure(background="#d9d9d9")
-        self.BotonJugarYGuardar.configure(command=lambda:JuegoLigasUI_Support.segundaOpcion())
+        self.BotonJugarYGuardar.configure(command=lambda:UISupportModule.segundaOpcion())
         self.BotonJugarYGuardar.configure(compound='center')
         self.BotonJugarYGuardar.configure(disabledforeground="#a3a3a3")
         self.BotonJugarYGuardar.configure(foreground="black")
@@ -242,7 +242,7 @@ def _on_shiftmouse(event, widget):
         elif event.num == 5:
             widget.xview_scroll(1, 'units')
 def start_up():
-    JuegoLigasUI_Support.main()
+    UISupportModule.main()
 
 if __name__ == '__main__':
-    JuegoLigasUI_Support.main()
+    UISupportModule.main()

@@ -57,8 +57,8 @@ class Confederacion:
         self._clasificadosInter: list[Equipo] = []
         self._clasificadosInter.extend(self.clasificadosACopaInternacionalHastaAhora())
 
-    def getClasificadosInternacionales(self) -> list[Equipo]:
-        return self._clasificadosInter
+    def getClasificadosInternacionales(self, deboLlevarUnoMenos: bool = False) -> list[Equipo]:
+        return self.listaMenosElTerceroSi_(self._clasificadosInter, deboLlevarUnoMenos)
 
     def jugarTodasLasCompeticionesGuardando(self, temporada : int) -> None:
         self.copaPrimera.jugarCopaGuardandoResultados("ligas/Copa_1_Resultados.txt", temporada)
@@ -69,11 +69,11 @@ class Confederacion:
         jugarCompeticionYGuardarResultados(self.jugarPromocion, "ligas/Liga_2_Resultados.txt")
         self.reiniciarLigas()
 
-    def jugarTodasLasCompeticionesImprimiendo(self, temporada : int) -> None:
-        DEBUG = False # True para que se imprima por consola
-        if (not DEBUG):
-            from JuegoLigasUI import TextRedirector
-            from JuegoLigasUI_Support import _w1
+    def jugarTodasLasCompeticionesImprimiendo(self, temporada : int, isRunnedInConsole: bool) -> None:
+        # isRunnedInConsole debe ser True para que se imprima por consola
+        if (not isRunnedInConsole):
+            from mainUI import TextRedirector
+            from UISupportModule import _w1
             WidgetDeTexto = TextRedirector(_w1)
             sys.stdout = WidgetDeTexto
         self.jugarCopaPrimera(temporada)
@@ -83,21 +83,21 @@ class Confederacion:
         self.agregarClasificadosInternacionales()
         self.jugarPromocion()
         self.reiniciarLigas()
-        if (not DEBUG):
+        if (not isRunnedInConsole):
             sys.stdout = sys.__stdout__
 
-    def jugarCompeticionesDePrimeraImprimiendo(self, temporada : int) -> None:
-        DEBUG = False # True para que se imprima por consola
-        if (not DEBUG):
-            from JuegoLigasUI import TextRedirector
-            from JuegoLigasUI_Support import _w1
+    def jugarCompeticionesDePrimeraImprimiendo(self, temporada : int, isRunnedInConsole: bool) -> None:
+        # isRunnedInConsole debe ser True para que se imprima por consola
+        if (not isRunnedInConsole):
+            from mainUI import TextRedirector
+            from UISupportModule import _w1
             WidgetDeTexto = TextRedirector(_w1)
             sys.stdout = WidgetDeTexto
         self.jugarCopaPrimera(temporada)
         self.jugarLigaPrimera(temporada)
         self.agregarClasificadosInternacionales()
         self.reiniciarLigas()
-        if (not DEBUG):
+        if (not isRunnedInConsole):
             sys.stdout = sys.__stdout__
         
     def aplicarCambiosDeCategoria(self) -> None:
@@ -135,6 +135,12 @@ class Confederacion:
     #     else: 
     #         clasificados.append(self.copaPrimera.campeon())
     #     return clasificados
+    def listaMenosElTerceroSi_(self, listaOriginal: list, condicion: bool) -> list:
+        if(condicion):
+            print(listaOriginal.pop(2).nombre())
+            print("LISTO")
+            return listaOriginal
+        return listaOriginal
 
     def clasificadosACopaInternacionalHastaAhoraSinPlaza(self) -> list[Equipo]:
         clasificados: list[Equipo] = self.ligaPrimera.topTres()
@@ -147,7 +153,13 @@ class Confederacion:
     def clasificadosACopaInternacionalHastaAhora(self) -> list[Equipo]:
         if(self._equipoCampeonDeCopaInternacional == None):
             return self.clasificadosACopaInternacionalHastaAhoraSinPlaza()
-        return self.clasificadosACopaInternacionalHastaAhoraSinPlaza() #TODO
+        
+        clasificados: list[Equipo] = self.clasificadosACopaInternacionalHastaAhoraSinPlaza() 
+        if (self._equipoCampeonDeCopaInternacional in clasificados):
+            clasificados.append(self.ligaPrimera.quinto())
+        else: 
+            clasificados.append(self._equipoCampeonDeCopaInternacional)
+        return clasificados
     
     def agregarEquipoCampeonDeCopaInternacional(self, nombreDelEquipo: str) -> None:
         self._equipoCampeonDeCopaInternacional = self.buscarEquipo_PorNombre(nombreDelEquipo)

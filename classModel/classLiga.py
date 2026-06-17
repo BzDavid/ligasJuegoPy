@@ -68,6 +68,12 @@ class Liga:
             print("No hay tantos equipos")
             return None
         return self._participantes[3]
+
+    def quinto(self) -> Equipo:
+        if(len(self._participantes) < 5): 
+            print("No hay tantos equipos")
+            return None
+        return self._participantes[4]
     
     def ultimo(self) -> Equipo:
         if(len(self._participantes) < 1): 
