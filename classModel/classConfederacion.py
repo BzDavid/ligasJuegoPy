@@ -58,7 +58,7 @@ class Confederacion:
         self._clasificadosInter.extend(self.clasificadosACopaInternacionalHastaAhora())
 
     def getClasificadosInternacionales(self, deboLlevarUnoMenos: bool = False) -> list[Equipo]:
-        return self.listaMenosElTerceroSi_(self._clasificadosInter, deboLlevarUnoMenos)
+        return self.listaMenosUnEquipoNoCampeonSi_(self._clasificadosInter, deboLlevarUnoMenos)
 
     def jugarTodasLasCompeticionesGuardando(self, temporada : int) -> None:
         self.copaPrimera.jugarCopaGuardandoResultados("ligas/Copa_1_Resultados.txt", temporada)
@@ -112,35 +112,25 @@ class Confederacion:
         self.ligaPrimera.anadirListaDeEquipos(equiposQueAscienden)
         self.ligaSegunda.anadirListaDeEquipos(equiposQueDescienden)
 
-
     def participantesDeLigaPrimera(self) -> list[Equipo]:
         return self.ligaPrimera.participantes()
     
     def participantesDeLigaSegunda(self) -> list[Equipo]:
         return self.ligaSegunda.participantes() 
 
-    # Deprecated
-    # def clasificadosACopaInternacionalHastaAhora(self): 
-    #     clasificados: list[Equipo] = self.ligaPrimera.topTres() if self._tengoPlazaDeCampeon else self.ligaPrimera.topDos()
-    #     if (self.copaPrimera.campeon()) in clasificados:
-    #         clasificados.append(self.ligaPrimera.cuarto() if self._tengoPlazaDeCampeon else self.ligaPrimera.tercero())
-    #     else: 
-    #         clasificados.append(self.copaPrimera.campeon())
-    #     return clasificados
-    
-    # def clasificadosACopaInternacionalHastaAhora(self):
-    #     clasificados: list[Equipo] = self.ligaPrimera.topTres()
-    #     if (self.copaPrimera.campeon() in clasificados):
-    #         clasificados.append(self.ligaPrimera.cuarto())
-    #     else: 
-    #         clasificados.append(self.copaPrimera.campeon())
-    #     return clasificados
-    def listaMenosElTerceroSi_(self, listaOriginal: list, condicion: bool) -> list:
+    def listaMenosUnEquipoNoCampeonSi_(self, listaOriginal: list, condicion: bool) -> list:
         if(condicion):
-            print(listaOriginal.pop(2).nombre())
-            print("LISTO")
+            numeroDeEquipoAEliminar: int = self.numeroDeEquipoUltimoEnListaQueNoEsCampeon(listaOriginal)
+            print(listaOriginal.pop(numeroDeEquipoAEliminar).nombre() + " No irá a la cita internacional")
             return listaOriginal
         return listaOriginal
+    
+    def numeroDeEquipoUltimoEnListaQueNoEsCampeon(self, listaOriginal: list[Equipo]) -> int:
+        indexDelultimo: int = len(listaOriginal) - 1 # La lista debe tener a dos elementos como minimo.
+        if(listaOriginal[indexDelultimo].nombre == self.nombreDelCampeonCopaPrimera()): # Si el último no es campeón, lo echo.
+            return indexDelultimo
+        else: # Asumo que si el último es el campeón, entonces el 3ro no lo es.
+            return indexDelultimo - 1
 
     def clasificadosACopaInternacionalHastaAhoraSinPlaza(self) -> list[Equipo]:
         clasificados: list[Equipo] = self.ligaPrimera.topTres()
@@ -156,10 +146,17 @@ class Confederacion:
         
         clasificados: list[Equipo] = self.clasificadosACopaInternacionalHastaAhoraSinPlaza() 
         if (self._equipoCampeonDeCopaInternacional in clasificados):
-            clasificados.append(self.ligaPrimera.quinto())
+            clasificados.append(self.definirSiVaElQuintoOElCuarto(clasificados))
         else: 
             clasificados.append(self._equipoCampeonDeCopaInternacional)
         return clasificados
+
+    def definirSiVaElQuintoOElCuarto(self, clasificados: list[Equipo]) -> Equipo:
+        if (self.ligaPrimera.cuarto() in clasificados):
+            return self.ligaPrimera.quinto()
+        else: 
+            return self.ligaPrimera.cuarto()
+
     
     def agregarEquipoCampeonDeCopaInternacional(self, nombreDelEquipo: str) -> None:
         self._equipoCampeonDeCopaInternacional = self.buscarEquipo_PorNombre(nombreDelEquipo)

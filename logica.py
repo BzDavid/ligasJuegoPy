@@ -75,16 +75,27 @@ def jugarIdaYVueltaYDarResultados(equipoLocal, equipoVisitante):
     return resultado
 
 def ganadorEntre_IdaYVuelta(equipoLocal , equipoVisitante): # Función auxiliar, me maté pensando que servia para otra cosa mas que solo la func de arriba.
-    for i in range(2):
+    for i in [0, 1]:
         equipoLocal.jugarPartidoIYV()
         equipoVisitante.jugarPartidoIYV()
-        mostrarResultadoConSuspenso(equipoLocal, equipoVisitante)
         mostrarResultadoDeEncuentroIYV(equipoLocal, equipoVisitante, i)
-        print("")
     if (equipoLocal.golesGlobales() > equipoVisitante.golesGlobales()):
         return equipoLocal
     elif (equipoLocal.golesGlobales() == equipoVisitante.golesGlobales()):
-        return jugarProrroga(equipoLocal, equipoVisitante)
+        return jugarProrrogaIYV(equipoLocal, equipoVisitante)
+    else:
+        return equipoVisitante
+    
+def jugarProrrogaIYV(equipoLocal, equipoVisitante, verResultado : bool = True):
+    equipoLocal.jugarProrrogaIYV()
+    equipoVisitante.jugarProrrogaIYV()
+    if (verResultado):
+        print("Es empate, procediendo a la prórroga: ")
+        mostrarResultadoDeEncuentroIYV(equipoLocal, equipoVisitante, 1)
+    if (ganoElLocal(equipoLocal, equipoVisitante)):
+        return equipoLocal
+    elif (empataronLosEquipos(equipoLocal, equipoVisitante)):
+        return jugarTandaDePenales(equipoLocal, equipoVisitante, verResultado)
     else:
         return equipoVisitante
     
@@ -165,10 +176,12 @@ def mostrarResultadoDeEncuentroIYV(equipoLocal, equipoVisitante, numeroDeEnfrent
         print(f"{equipoLocal.nombre()} [{equipoLocal.golesEnPartido()}]")
         print(f"{equipoVisitante.nombre()} [{equipoVisitante.golesEnPartido()}]")
         print(f"Global: {equipoLocal.nombre()} [{equipoLocal.golesGlobales()}] - [{equipoVisitante.golesGlobales()}] {equipoVisitante.nombre()}")
+        print("")
     else:
         print(f"{equipoVisitante.nombre()} [{equipoVisitante.golesEnPartido()}]")
         print(f"{equipoLocal.nombre()} [{equipoLocal.golesEnPartido()}]")
         print(f"Global: {equipoVisitante.nombre()} [{equipoVisitante.golesGlobales()}] - [{equipoLocal.golesGlobales()}] {equipoLocal.nombre()}")
+        print("")
 # ----------------------------------------------------------------
 
 def jugarCompeticionYGuardarResultados(competicion, nombreArchivo : str):

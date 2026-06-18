@@ -92,7 +92,7 @@ class Liga:
         self.actualizarEquiposParticipantes()
 
     def ordenarPorPuntos(self) -> None:
-        self._participantes.sort(key = lambda unEquipo: (unEquipo.puntos(), unEquipo.diferenciaDeGoles()), reverse = True)
+        self._participantes.sort(key = lambda unEquipo: (unEquipo.puntos(), unEquipo.diferenciaDeGoles(), unEquipo.golesAFavor()), reverse = True)
 
     def imprimirEstadoDeLiga(self) -> None:
         self.ordenarPorPuntos()

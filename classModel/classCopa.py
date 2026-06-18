@@ -1,6 +1,6 @@
 import sys
 from random import shuffle
-from logica import ganadorEntre_ParaCopas
+from logica import ganadorEntre_ParaCopas, jugarIdaYVueltaYDarResultados
 from .classLiga import Liga
 from .classEquipo import Equipo
 class Copa:
@@ -123,7 +123,6 @@ class Copa:
         self.jugarConEnfrentamientos_DelGrupoFinal_(self.ListaDelCeroHastaMitadDeLaLongitudDeLaFaseFinalDelGrupo1(), self._faseFinalGrupo1, esConIdaYVuelta)
         self.jugarConEnfrentamientos_DelGrupoFinal_(self.ListaDeMitadLongitudHastaLaLongitudDeLaFaseFinalDelGrupo2(), self._faseFinalGrupo2, esConIdaYVuelta)
         self.avanzarEliminatoria(numeroDeEquiposAEliminar)
-        self.faseFinalGrupo1PorNombre()
 
     def jugarConEnfrentamientos_DelGrupoFinal_(self, listaDelNumeroDeEnfrentamientos : list, listaDeLaFaseFinal : list, esConIdaYVuelta : bool) -> None:
         for i in listaDelNumeroDeEnfrentamientos:
@@ -134,7 +133,7 @@ class Copa:
 
     def enfrentarAlNumero_DeLAFaseFinalDeGruposYAgregarAlGanadorALista_EnModo_(self, numeroDePosicion : int, listaDeLaFaseFinal: list, esConIdaYVuelta: bool):
         if(esConIdaYVuelta):
-            listaDeLaFaseFinal.append(ganadorEntre_ParaCopas(self._faseFinalGrupo1[numeroDePosicion], self._faseFinalGrupo2[numeroDePosicion])) # TODO
+            listaDeLaFaseFinal.append(jugarIdaYVueltaYDarResultados(self._faseFinalGrupo1[numeroDePosicion], self._faseFinalGrupo2[numeroDePosicion])[0]) 
         else: 
             listaDeLaFaseFinal.append(ganadorEntre_ParaCopas(self._faseFinalGrupo1[numeroDePosicion], self._faseFinalGrupo2[numeroDePosicion])) 
 
@@ -147,7 +146,7 @@ class Copa:
     def jugarFinal(self, esConIdaYVuelta : bool = False) -> None:
         print("¡La gran final de la copa ha comenzado!")
         if(esConIdaYVuelta):
-            self._campeon = ganadorEntre_ParaCopas(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0]) # TODO
+            self._campeon = jugarIdaYVueltaYDarResultados(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])[0]
         else:
             self._campeon = ganadorEntre_ParaCopas(self._faseFinalGrupo1[0], self._faseFinalGrupo2[0])
         print(f"¡{self._campeon.nombre()} es el campeón de la copa!")

@@ -121,9 +121,7 @@ def confederacionCampeona() -> list[CL.Confederacion]:
 def jugarGuardando() -> None:
     copaInternacional.jugarCopaGuardandoResultados("ligas/Copa_Internacional_Resultados.txt", temporada, True)
     establecerCampeonInternacionalASuConfederacion(copaInternacional.campeon())
-    # establecerConfederacionAlCampeonDeCopaInternacional()
     confederacionNorte.jugarTodasLasCompeticionesGuardando(temporada)
-    # copaInternacional.campeon().confederacion().agregarUnaPlazaACopaInternacional()
     ligaEste.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)
     ligaSur.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)
     ligaOeste.jugarCompeticionesDePrimeraImprimiendo(temporada, isRunningInConsole)

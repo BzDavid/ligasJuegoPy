@@ -1,3 +1,5 @@
+from xml.etree.ElementTree import tostring
+
 from logica import generar
 #from .classConfederacion import Confederacion
 from typing import TYPE_CHECKING
@@ -69,10 +71,13 @@ class Equipo:
     def stats(self) -> list: 
         return [self._nombre, self._puntos, self.diferenciaDeGoles()]
 
-    def fullStats(self) -> list:
-        return [self._nombre, self.partidosJugados(), self._partidosGanados, self._partidosEmpatados, self._partidosPerdidos, self._golesAFavor, self._golesEnContra, self.diferenciaDeGoles(), self._puntos] 
+    # def fullStats(self) -> list:
+    #     return [self._nombre, "PTS: " + toStrself._puntos, "PJ: " + self.partidosJugados(), "PG: " + self._partidosGanados, "PE: " + self._partidosEmpatados, "PP: " + self._partidosPerdidos, "GF: " + self._golesAFavor, "GC: " + self._golesEnContra, "DG: " + self.diferenciaDeGoles()] 
+    
+    def fullStatsint(self) -> list:
+        return [self._nombre, self._puntos, self.partidosJugados(), self._partidosGanados, self._partidosEmpatados, self._partidosPerdidos, self._golesAFavor, self._golesEnContra, self.diferenciaDeGoles()]
 
-    def dicDeStats(self):
+    def fullStats(self):
         return {
             "Equipo" : self._nombre, 
             "PJ" : self.partidosJugados(),
@@ -95,9 +100,12 @@ class Equipo:
 
     def jugarPartidoEspecial(self) -> None:
         self._golesEnPartido = generar()
+
+    def generarResultadoProrroga(self) -> None:
+        return max(generar() - 2, 0)
         
     def jugarProrroga(self) -> None:
-        self._golesEnPartido = max(generar() - 2, 0)
+        self._golesEnPartido = self.generarResultadoProrroga()
 
     def sumarGolesEnContra(self, goles: int) -> None:
         self._golesEnContra += goles
@@ -131,6 +139,10 @@ class Equipo:
         self.jugarPartidoEspecial()
         self.sumarGolesActualesAGolesGlobales()
         self._partidosGlobalesJugados += 1
+
+    def jugarProrrogaIYV(self) -> None:
+        self.jugarProrroga
+        self.sumarGolesActualesAGolesGlobales()
 
     def sumarGolesActualesAGolesGlobales(self) -> None:
         self._golesGlobales += self._golesEnPartido
