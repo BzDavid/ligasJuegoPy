@@ -127,7 +127,7 @@ class Confederacion:
     
     def numeroDeEquipoUltimoEnListaQueNoEsCampeon(self, listaOriginal: list[Equipo]) -> int:
         indexDelultimo: int = len(listaOriginal) - 1 # La lista debe tener a dos elementos como minimo.
-        if(listaOriginal[indexDelultimo].nombre == self.nombreDelCampeonCopaPrimera()): # Si el último no es campeón, lo echo.
+        if(listaOriginal[indexDelultimo].nombre() == self.nombreDelCampeonCopaPrimera()): # Si el último no es campeón, lo echo.
             return indexDelultimo
         else: # Asumo que si el último es el campeón, entonces el 3ro no lo es.
             return indexDelultimo - 1
